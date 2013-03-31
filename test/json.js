@@ -1,6 +1,5 @@
 
-var jsonConvert = require('../lib/json')
-var textConvert = require('../lib/text')
+var streamConvert = require('../lib/stream-convert')
 var path = require('path')
 var fileStream = require('quiver-file-stream')
 var should = require('should')
@@ -16,7 +15,7 @@ var testEqualOriginalJson = function(json) {
 }
 
 var testStream = function(readStream, callback) {
-  jsonConvert.streamToJson(readStream, function(err, json) {
+  streamConvert.streamToJson(readStream, function(err, json) {
     if(err) throw err
 
     testEqualOriginalJson(json)
@@ -38,14 +37,14 @@ describe('basic json test', function() {
   })
 
   it('should convert json to streamable', function(callback) {
-    var streamable = jsonConvert.jsonToStreamable(originalJson)
+    var streamable = streamConvert.jsonToStreamable(originalJson)
     testStream(streamable.toStream(), callback)
   })
 
   it('should convert text to streamble', function(callback) {
     var jsonText = JSON.stringify(originalJson)
-    var streamable = textConvert.textToStreamable(jsonText)
-    jsonConvert.streamableToJson(streamable, function(err, json) {
+    var streamable = streamConvert.textToStreamable(jsonText)
+    streamConvert.streamableToJson(streamable, function(err, json) {
       if(err) throw err
 
       testEqualOriginalJson(json)

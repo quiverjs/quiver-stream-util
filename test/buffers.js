@@ -4,7 +4,6 @@ var should = require('should')
 
 var testBuffers = [ 'foo', 'bar', 'baz' ]
 
-
 describe('basic buffer test', function() {
   var streamable = streamConvert.buffersToStreamable(testBuffers)
 

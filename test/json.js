@@ -38,6 +38,7 @@ describe('basic json test', function() {
 
   it('should convert json to streamable', function(callback) {
     var streamable = streamConvert.jsonToStreamable(originalJson)
+    streamable.contentType.should.equal('application/json')
     testStream(streamable.toStream(), callback)
   })
 

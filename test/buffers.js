@@ -8,21 +8,23 @@ describe('basic buffer test', function() {
   var streamable = streamConvert.buffersToStreamable(testBuffers)
 
   it('should convert buffers to stream', function(callback) {
-    var readStream = streamable.toStream()
-
-    readStream.read(function(streamClosed, data) {
-      data.should.equal(testBuffers[0])
+    streamable.toStream(function(err, readStream) {
+      if(err) throw err
 
       readStream.read(function(streamClosed, data) {
-        data.should.equal(testBuffers[1])
+        data.should.equal(testBuffers[0])
 
         readStream.read(function(streamClosed, data) {
-          data.should.equal(testBuffers[2])
+          data.should.equal(testBuffers[1])
 
           readStream.read(function(streamClosed, data) {
-            should.exist(streamClosed)
+            data.should.equal(testBuffers[2])
 
-            callback(null)
+            readStream.read(function(streamClosed, data) {
+              should.exist(streamClosed)
+
+              callback(null)
+            })
           })
         })
       })
@@ -39,16 +41,29 @@ describe('basic buffer test', function() {
   })
 
   it('convert buffers stream into reusable streamable', function(callback) {
-    var reusable = streamConvert.streamToReusableStreamable(streamable.toStream())
-    streamConvert.streamToBuffers(reusable.toStream(), function(err, buffers) {
-      should.not.exist(err)
-      buffers.should.eql(testBuffers)
+    streamable.toStream(function(err, readStream) {
+      if(err) throw err
 
-      streamConvert.streamToBuffers(reusable.toStream(), function(err, buffers) {
-        should.not.exist(err)
-        buffers.should.eql(testBuffers)
+      var reusable = streamConvert.streamToReusableStreamable(readStream)
+      
+      reusable.toStream(function(err, readStream) {
+        if(err) throw err
 
-        callback(null)
+        streamConvert.streamToBuffers(readStream, function(err, buffers) {
+          should.not.exist(err)
+          buffers.should.eql(testBuffers)
+
+          reusable.toStream(function(err, readStream) {
+            if(err) throw err
+
+            streamConvert.streamToBuffers(readStream, function(err, buffers) {
+              should.not.exist(err)
+              buffers.should.eql(testBuffers)
+
+              callback(null)
+            })
+          })
+        })
       })
     })
   })

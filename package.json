@@ -6,15 +6,15 @@
   },
   "name": "quiver-stream-convert",
   "desription": "Convert read streams to different formats",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "homepage": "https://github.com/quiverjs/stream-convert",
   "repository": {
     "url": "git@github.com:quiverjs/stream-convert.git"
   },
   "dependencies": {
-    "quiver-error": ">=0.0.1",
+    "quiver-error": ">=0.0.3",
     "quiver-copy": ">=0.0.1",
-    "quiver-stream-channel": ">=0.0.4"
+    "quiver-stream-channel": ">=0.0.11"
   },
   "devDependencies": {
     "quiver-file-stream": ">=0.0.1",

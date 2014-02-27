@@ -1,12 +1,18 @@
 
 var streamConvert = require('../lib/stream-convert')
+var fs = require('fs')
 var path = require('path')
-var fileStream = require('quiver-file-stream')
 var should = require('should')
+var nodeStream = require('quiver-node-stream')
 
 var testFile = './test-file.json'
 var testPath = path.join(__dirname, testFile)
 var originalJson = require(testFile)
+
+var createFileReadStream = function(filePath) {
+  var nodeReadStream = fs.createReadStream(filePath)
+  return nodeStream.createNodeReadStreamAdapter(nodeReadStream)
+}
 
 var testEqualOriginalJson = function(json) {
   json.foo.should.equal('testing 123')
@@ -29,11 +35,10 @@ describe('basic json test', function() {
   })
 
   it('should parse json correctly', function(callback) {
-    fileStream.createFileReadStream(testPath, function(err, readStream) {
-      if(err) throw err
+    var nodeReadStream = fs.createReadStream(testPath)
+    var readStream = nodeStream.createNodeReadStreamAdapter(nodeReadStream)
 
-      testStream(readStream, callback)
-    })
+    testStream(readStream, callback)
   })
 
   it('should convert json to streamable', function(callback) {

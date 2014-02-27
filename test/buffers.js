@@ -1,3 +1,4 @@
+'use strict'
 
 var streamConvert = require('../lib/stream-convert')
 var should = require('should')

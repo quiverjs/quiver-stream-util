@@ -4,6 +4,7 @@ var fs = require('fs')
 var path = require('path')
 var should = require('should')
 var nodeStream = require('quiver-node-stream')
+'use strict'
 
 var testFile = './test-file.json'
 var testPath = path.join(__dirname, testFile)

@@ -1,71 +1,44 @@
-'use strict'
-
-var streamConvert = require('../lib/stream-convert')
+import 'traceur'
+import { 
+  streamableToText, buffersToStreamable, reuseStream, streamToBuffers
+} from '../lib/stream-convert.js'
 var should = require('should')
 
 var testBuffers = [ 'foo', 'bar', 'baz' ]
 
-describe('basic buffer test', function() {
-  var streamable = streamConvert.buffersToStreamable(testBuffers)
+describe('basic buffer test', () => {
+  var streamable = buffersToStreamable(testBuffers)
 
-  it('should convert buffers to stream', function(callback) {
-    streamable.toStream(function(err, readStream) {
-      if(err) throw err
-
-      readStream.read(function(streamClosed, data) {
+  it('should convert buffers to stream', () =>
+    streamable.toStream().then(readStream =>
+      readStream.read().then(({closed, data}) => {
         data.should.equal(testBuffers[0])
 
-        readStream.read(function(streamClosed, data) {
+        return readStream.read().then(({closed, data}) => {
           data.should.equal(testBuffers[1])
 
-          readStream.read(function(streamClosed, data) {
+          return readStream.read().then(({closed, data}) => {
             data.should.equal(testBuffers[2])
 
-            readStream.read(function(streamClosed, data) {
-              should.exist(streamClosed)
-
-              callback(null)
-            })
+            return readStream.read().then(({closed, data}) => 
+              should.exist(closed))
           })
         })
-      })
-    })
-  })
+      })))
 
-  it('should be convertible to string', function(callback) {
-    streamConvert.streamableToText(streamable, function(err, text) {
-      if(err) throw err
+  it('should be convertible to string', () =>
+    streamableToText(streamable).then(text =>
+      text.should.equal('foobarbaz')))
 
-      text.should.equal('foobarbaz')
-      callback(null)
-    })
-  })
-
-  it('convert buffers stream into reusable streamable', function(callback) {
-    streamable.toStream(function(err, readStream) {
-      if(err) throw err
-
-      var reusable = streamConvert.streamToReusableStreamable(readStream)
-      
-      reusable.toStream(function(err, readStream) {
-        if(err) throw err
-
-        streamConvert.streamToBuffers(readStream, function(err, buffers) {
-          should.not.exist(err)
-          buffers.should.eql(testBuffers)
-
-          reusable.toStream(function(err, readStream) {
-            if(err) throw err
-
-            streamConvert.streamToBuffers(readStream, function(err, buffers) {
-              should.not.exist(err)
-              buffers.should.eql(testBuffers)
-
-              callback(null)
-            })
-          })
-        })
-      })
-    })
-  })
+  it('convert buffers stream into reusable streamable', () =>
+    streamable.toStream().then(reuseStream)
+    .then(streamable => 
+      streamable.toStream().then(streamToBuffers)
+      .then(buffers => {
+        buffers.should.eql(testBuffers)
+        
+        // call toStream() again
+        return streamable.toStream().then(streamToBuffers)
+        .then(buffers => buffers.should.eql(testBuffers))
+      })))
 })

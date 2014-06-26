@@ -1,65 +1,50 @@
+import 'traceur'
+import { 
+  streamToJson, buffersToStream, textToStreamable,
+  jsonToStreamable, streamableToJson
+} from '../lib/stream-convert.js'
 
-var streamConvert = require('../lib/stream-convert')
-var fs = require('fs')
-var path = require('path')
 var should = require('should')
-var nodeStream = require('quiver-node-stream')
-'use strict'
 
-var testFile = './test-file.json'
-var testPath = path.join(__dirname, testFile)
-var originalJson = require(testFile)
-
-var createFileReadStream = function(filePath) {
-  var nodeReadStream = fs.createReadStream(filePath)
-  return nodeStream.createNodeReadStreamAdapter(nodeReadStream)
+var originalJson = {
+  "foo": "testing 123",
+  "bar": [
+    "a", "b"
+  ]
 }
 
-var testEqualOriginalJson = function(json) {
+var testJson = function(json) {
   json.foo.should.equal('testing 123')
   json.bar[0].should.equal('a')
   json.bar[1].should.equal('b')
 }
 
-var testStream = function(readStream, callback) {
-  streamConvert.streamToJson(readStream, function(err, json) {
-    if(err) throw err
-
-    testEqualOriginalJson(json)
-    callback(null)
-  })
-}
+var testBuffers = [
+  '{ "fo', 'o": "', 'testing ', '123", ', '"bar', '": [ ',
+  '"a", "b', '"] }' 
+]
 
 describe('basic json test', function() {
-  it('sanity test with original content', function() {
-    testEqualOriginalJson(originalJson)
-  })
+  it('sanity test with original content', () => 
+    testJson(originalJson))
 
-  it('should parse json correctly', function(callback) {
-    var nodeReadStream = fs.createReadStream(testPath)
-    var readStream = nodeStream.createNodeReadStreamAdapter(nodeReadStream)
+  it('sanity test with test buffers', () =>
+    testJson(JSON.parse((testBuffers.join('')))))
 
-    testStream(readStream, callback)
-  })
+  it('should parse json correctly', () =>
+    streamToJson(buffersToStream(testBuffers)).then(testJson))
 
-  it('should convert json to streamable', function(callback) {
-    var streamable = streamConvert.jsonToStreamable(originalJson)
+  it('should convert json to streamable', () => {
+    var streamable = jsonToStreamable(originalJson)
     streamable.contentType.should.equal('application/json')
-    streamable.toStream(function(err, readStream) {
-      if(err) throw err
 
-      testStream(readStream, callback)
-    })
+    return streamable.toStream().then(streamToJson).then(testJson)
   })
 
-  it('should convert text to streamble', function(callback) {
+  it('should convert text to streamble', () => {
     var jsonText = JSON.stringify(originalJson)
-    var streamable = streamConvert.textToStreamable(jsonText)
-    streamConvert.streamableToJson(streamable, function(err, json) {
-      if(err) throw err
+    var streamable = textToStreamable(jsonText)
 
-      testEqualOriginalJson(json)
-      callback(null)
-    })
+    return streamableToJson(streamable).then(testJson)
   })
 })

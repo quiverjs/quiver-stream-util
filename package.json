@@ -6,20 +6,21 @@
   },
   "name": "quiver-stream-convert",
   "desription": "Convert read streams to different formats",
-  "version": "0.0.11",
+  "version": "1.0.0",
   "homepage": "https://github.com/quiverjs/stream-convert",
   "repository": {
     "url": "git@github.com:quiverjs/stream-convert.git"
   },
   "dependencies": {
     "quiver-error": "~0.1.0",
-    "quiver-copy": "~0.1.4",
-    "quiver-stream-channel": "~0.0.12"
+    "quiver-object": "~1.0.0",
+    "quiver-stream-channel": "~1.0.0"
   },
   "devDependencies": {
-    "quiver-node-stream": "~0.0.5",
-    "mocha": "~1.17.1",
-    "should": "~3.1.2"
+    "gulp": "^3.8.1",
+    "gulp-traceur": "^0.7.0",
+    "mocha": "^1.20.1",
+    "should": "^4.0.4"
   },
   "bugs": {
     "url": "https://github.com/quiverjs/stream-convert/issues",

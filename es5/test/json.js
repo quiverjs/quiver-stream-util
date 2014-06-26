@@ -1,12 +1,13 @@
 "use strict";
 require('traceur');
-var $__0 = $traceurRuntime.assertObject(require('../lib/stream-convert.js')),
+var $__0 = $traceurRuntime.assertObject(require('../lib/stream-util.js')),
     streamToJson = $__0.streamToJson,
     buffersToStream = $__0.buffersToStream,
     textToStreamable = $__0.textToStreamable,
     jsonToStreamable = $__0.jsonToStreamable,
     streamableToJson = $__0.streamableToJson;
-var should = require('should');
+var chai = require('chai');
+var should = chai.should();
 var originalJson = {
   "foo": "testing 123",
   "bar": ["a", "b"]

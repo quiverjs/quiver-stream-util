@@ -2,4 +2,4 @@
 
 var traceur = require('traceur')
 
-module.exports = require('./es5/lib/stream-convert.js')
+module.exports = require('./es5/lib/stream-util.js')

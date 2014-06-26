@@ -2,9 +2,10 @@ import 'traceur'
 import { 
   streamToJson, buffersToStream, textToStreamable,
   jsonToStreamable, streamableToJson
-} from '../lib/stream-convert.js'
+} from '../lib/stream-util.js'
 
-var should = require('should')
+var chai = require('chai')
+var should = chai.should()
 
 var originalJson = {
   "foo": "testing 123",

@@ -1,11 +1,12 @@
 "use strict";
 require('traceur');
-var $__0 = $traceurRuntime.assertObject(require('../lib/stream-convert.js')),
+var $__0 = $traceurRuntime.assertObject(require('../lib/stream-util.js')),
     streamableToText = $__0.streamableToText,
     buffersToStreamable = $__0.buffersToStreamable,
     reuseStream = $__0.reuseStream,
     streamToBuffers = $__0.streamToBuffers;
-var should = require('should');
+var chai = require('chai');
+var should = chai.should();
 var testBuffers = ['foo', 'bar', 'baz'];
 describe('basic buffer test', (function() {
   var streamable = buffersToStreamable(testBuffers);

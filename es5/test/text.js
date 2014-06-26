@@ -1,8 +1,9 @@
 "use strict";
 require('traceur');
 var createChannel = $traceurRuntime.assertObject(require('quiver-stream-channel')).createChannel;
-var streamToText = $traceurRuntime.assertObject(require('../lib/stream-convert.js')).streamToText;
-var should = require('should');
+var streamToText = $traceurRuntime.assertObject(require('../lib/stream-util.js')).streamToText;
+var chai = require('chai');
+var should = chai.should();
 var testString = '世界你好';
 var testBuffer = new Buffer(testString);
 var buffer1 = testBuffer.slice(0, 5);

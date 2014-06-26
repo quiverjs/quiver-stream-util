@@ -2,9 +2,10 @@ import 'traceur'
 import { createChannel } from 'quiver-stream-channel'
 import {
   streamToText
-} from '../lib/stream-convert.js'
+} from '../lib/stream-util.js'
 
-var should = require('should')
+var chai = require('chai')
+var should = chai.should()
 
 var testString = '世界你好'
 var testBuffer = new Buffer(testString)

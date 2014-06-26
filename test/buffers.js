@@ -1,8 +1,10 @@
 import 'traceur'
 import { 
   streamableToText, buffersToStreamable, reuseStream, streamToBuffers
-} from '../lib/stream-convert.js'
-var should = require('should')
+} from '../lib/stream-util.js'
+
+var chai = require('chai')
+var should = chai.should()
 
 var testBuffers = [ 'foo', 'bar', 'baz' ]
 

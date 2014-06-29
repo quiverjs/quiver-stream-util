@@ -9,6 +9,9 @@ Object.defineProperties(exports, {
   reuseStreamable: {get: function() {
       return reuseStreamable;
     }},
+  unreuseStreamable: {get: function() {
+      return unreuseStreamable;
+    }},
   __esModule: {value: true}
 });
 var error = $traceurRuntime.assertObject(require('quiver-error')).error;
@@ -76,4 +79,18 @@ var reuseStreamable = (function(streamable) {
   if (streamable.reusable)
     return resolve(streamable);
   return streamable.toStream().then(reuseStream);
+});
+var unreuseStreamable = (function(streamable) {
+  if (!streamable.reusable)
+    return streamable;
+  var oldToStream = streamable.toStream;
+  streamable.reusable = false;
+  var opened = false;
+  streamable.toStream = (function() {
+    if (opened)
+      return rreject(error(500, 'streamable can only be opened once'));
+    opened = true;
+    return oldToStream();
+  });
+  return streamable;
 });

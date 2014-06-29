@@ -12,6 +12,7 @@ var createChannel = $traceurRuntime.assertObject(require('quiver-stream-channel'
 var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     resolve = $__0.resolve,
     createPromise = $__0.createPromise;
+var noop = (function() {});
 var nodeToQuiverReadStream = (function(nodeRead) {
   var $__0 = $traceurRuntime.assertObject(createChannel()),
       readStream = $__0.readStream,
@@ -20,43 +21,37 @@ var nodeToQuiverReadStream = (function(nodeRead) {
   nodeRead.on('end', (function() {
     if (ended)
       return;
-    writeStream.closeWrite();
     ended = true;
+    writeStream.closeWrite();
   }));
   nodeRead.on('error', (function(err) {
     if (ended)
       return;
-    writeStream.closeWrite(err);
     ended = true;
+    writeStream.closeWrite(err);
   }));
-  var doRead = (function() {
+  var doRead = (function(callback) {
     if (ended)
-      return resolve({ended: ended});
+      return;
     var data = nodeRead.read();
     if (data)
-      return resolve({data: data});
-    return createPromise((function(resolve) {
-      return nodeRead.once('readable', (function() {
-        return resolve(doRead());
-      }));
+      return callback(data);
+    nodeRead.once('readable', (function() {
+      return doRead(callback);
     }));
   });
   var doPipe = (function() {
     return writeStream.prepareWrite().then((function($__0) {
       var closed = $__0.closed;
-      if (closed || ended)
-        return;
-      return doRead().then((function($__1) {
-        var ended = $__1.ended,
-            data = $__1.data;
-        if (ended)
-          return writeStream.closeWrite();
+      if (closed)
+        return nodeRead.resume();
+      doRead((function(data) {
         writeStream.write(data);
-        return doPipe();
+        doPipe();
       }));
     }));
   });
-  doPipe().catch((function(err) {}));
+  doPipe();
   return readStream;
 });
 var nodeToQuiverWriteStream = (function(nodeWrite) {
@@ -75,15 +70,11 @@ var nodeToQuiverWriteStream = (function(nodeWrite) {
       var ready = nodeWrite.write(data);
       if (ready)
         return doPipe();
-      return createPromise((function(resolve) {
-        return nodeWrite.once('drain', (function() {
-          return resolve(doPipe());
-        }));
-      }));
+      nodeWrite.once('drain', doPipe);
     }), (function(err) {
       return nodeWrite.end();
     }));
   });
-  doPipe().catch((function(err) {}));
+  doPipe();
   return writeStream;
 });

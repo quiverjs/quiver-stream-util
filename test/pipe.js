@@ -7,8 +7,8 @@ import {
 var chai = require('chai')
 var chaiAsPromised = require('chai-as-promised')
 
-var should = chai.use(chaiAsPromised)
-chai.should()
+chai.use(chaiAsPromised)
+var should = chai.should()
 
 var buffers = ['one ', 'two ', 'three']
 

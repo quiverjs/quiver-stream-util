@@ -7,8 +7,8 @@ var $__0 = $traceurRuntime.assertObject(require('../lib/stream-util.js')),
     streamToText = $__0.streamToText;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
-var should = chai.use(chaiAsPromised);
-chai.should();
+chai.use(chaiAsPromised);
+var should = chai.should();
 var buffers = ['one ', 'two ', 'three'];
 describe('pipestream test', (function() {
   it('should pipe successfully', (function() {

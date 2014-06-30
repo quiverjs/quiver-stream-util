@@ -39,7 +39,7 @@ var streamableToText = (function(streamable) {
   }));
 });
 var textToStream = (function(text) {
-  var $__0 = $traceurRuntime.assertObject(createChanne()),
+  var $__0 = $traceurRuntime.assertObject(createChannel()),
       readStream = $__0.readStream,
       writeStream = $__0.writeStream;
   writeStream.write(new Buffer(text));

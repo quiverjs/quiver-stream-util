@@ -1,7 +1,11 @@
 import 'traceur'
+
 import { 
   streamableToText, buffersToStreamable, reuseStream, streamToBuffers
 } from '../lib/stream-util.js'
+
+import { enableDebug, promiseChain, resolve } from 'quiver-promise'
+enableDebug({timeout: 1000})
 
 var chai = require('chai')
 var should = chai.should()
@@ -12,21 +16,25 @@ describe('basic buffer test', () => {
   var streamable = buffersToStreamable(testBuffers)
 
   it('should convert buffers to stream', () =>
-    streamable.toStream().then(readStream =>
-      readStream.read().then(({closed, data}) => {
-        data.should.equal(testBuffers[0])
-
-        return readStream.read().then(({closed, data}) => {
-          data.should.equal(testBuffers[1])
+    promiseChain(complete =>
+      streamable.toStream().then(readStream => 
+        readStream.read().then(({closed, data}) => {
+          data.should.equal(testBuffers[0])
 
           return readStream.read().then(({closed, data}) => {
-            data.should.equal(testBuffers[2])
+            data.should.equal(testBuffers[1])
 
-            return readStream.read().then(({closed, data}) => 
-              should.exist(closed))
+            return readStream.read().then(({closed, data}) => {
+              data.should.equal(testBuffers[2])
+
+              return readStream.read().then(({closed, data}) => {
+                should.exist(closed)
+
+                return complete
+              })
+            })
           })
-        })
-      })))
+        }))))
 
   it('should be convertible to string', () =>
     streamableToText(streamable).then(text =>

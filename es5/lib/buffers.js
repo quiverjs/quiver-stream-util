@@ -14,21 +14,23 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var resolve = $traceurRuntime.assertObject(require('quiver-promise')).resolve;
+var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
+    resolve = $__0.resolve,
+    promisify = $__0.promisify;
 var createChannel = $traceurRuntime.assertObject(require('quiver-stream-channel')).createChannel;
 var streamToBuffers = (function(readStream) {
   var buffers = [];
-  var doPipe = (function() {
+  var doPipe = (function(callback) {
     return readStream.read().then((function($__0) {
       var closed = $__0.closed,
           data = $__0.data;
       if (closed)
-        return buffers;
+        return callback(null, buffers);
       buffers.push(data);
-      return doPipe();
-    }));
+      doPipe(callback);
+    }), callback);
   });
-  return doPipe();
+  return promisify(doPipe)();
 });
 var streamableToBuffers = (function(streamable) {
   if (streamable.toBuffers)

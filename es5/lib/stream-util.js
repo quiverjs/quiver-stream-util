@@ -66,6 +66,15 @@ Object.defineProperties(exports, {
   nodeToQuiverWriteStream: {get: function() {
       return nodeToQuiverWriteStream;
     }},
+  emptyReadStream: {get: function() {
+      return emptyReadStream;
+    }},
+  emptyWriteStream: {get: function() {
+      return emptyWriteStream;
+    }},
+  emptyStreamable: {get: function() {
+      return emptyStreamable;
+    }},
   pipeStream: {get: function() {
       return pipeStream;
     }},
@@ -102,6 +111,10 @@ var $__0 = $traceurRuntime.assertObject(require('./streamable.js')),
 var $__0 = $traceurRuntime.assertObject(require('./node-stream.js')),
     nodeToQuiverReadStream = $__0.nodeToQuiverReadStream,
     nodeToQuiverWriteStream = $__0.nodeToQuiverWriteStream;
+var $__0 = $traceurRuntime.assertObject(require('./empty.js')),
+    emptyReadStream = $__0.emptyReadStream,
+    emptyWriteStream = $__0.emptyWriteStream,
+    emptyStreamable = $__0.emptyStreamable;
 var pipeStream = $traceurRuntime.assertObject(require('./pipe.js')).pipeStream;
 var createChannel = $traceurRuntime.assertObject(require('quiver-stream-channel')).createChannel;
 ;

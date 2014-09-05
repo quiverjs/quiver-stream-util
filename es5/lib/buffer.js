@@ -14,11 +14,14 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var resolve = $traceurRuntime.assertObject(require('quiver-promise')).resolve;
-var createChannel = $traceurRuntime.assertObject(require('quiver-stream-channel')).createChannel;
-var $__0 = $traceurRuntime.assertObject(require('./buffers.js')),
-    streamToBuffers = $__0.streamToBuffers,
-    streamableToBuffers = $__0.streamableToBuffers;
+var $__quiver_45_promise__,
+    $__quiver_45_stream_45_channel__,
+    $__buffers_46_js__;
+var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
+var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
+var $__2 = ($__buffers_46_js__ = require("./buffers.js"), $__buffers_46_js__ && $__buffers_46_js__.__esModule && $__buffers_46_js__ || {default: $__buffers_46_js__}),
+    streamToBuffers = $__2.streamToBuffers,
+    streamableToBuffers = $__2.streamableToBuffers;
 var nodeBuffers = (function(buffers) {
   return buffers.map((function(buffer) {
     return (buffer instanceof Buffer) ? buffer : new Buffer(buffer);
@@ -43,9 +46,9 @@ var streamableToBuffer = (function(streamable) {
   }));
 });
 var bufferToStream = (function(buffer) {
-  var $__0 = $traceurRuntime.assertObject(createChannel()),
-      readStream = $__0.readStream,
-      writeStream = $__0.writeStream;
+  var $__3 = createChannel(),
+      readStream = $__3.readStream,
+      writeStream = $__3.writeStream;
   writeStream.write(buffer);
   writeStream.closeWrite(null);
   return readStream;

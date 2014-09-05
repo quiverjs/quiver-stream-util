@@ -11,7 +11,8 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var resolve = $traceurRuntime.assertObject(require('quiver-promise')).resolve;
+var $__quiver_45_promise__;
+var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
 var emptyReadStream = (function() {
   return ({
     read: (function() {

@@ -83,38 +83,47 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var $__0 = $traceurRuntime.assertObject(require('./buffers.js')),
+var $__buffers_46_js__,
+    $__buffer_46_js__,
+    $__text_46_js__,
+    $__json_46_js__,
+    $__streamable_46_js__,
+    $__node_45_stream_46_js__,
+    $__empty_46_js__,
+    $__pipe_46_js__,
+    $__quiver_45_stream_45_channel__;
+var $__0 = ($__buffers_46_js__ = require("./buffers.js"), $__buffers_46_js__ && $__buffers_46_js__.__esModule && $__buffers_46_js__ || {default: $__buffers_46_js__}),
     streamToBuffers = $__0.streamToBuffers,
     streamableToBuffers = $__0.streamableToBuffers,
     buffersToStream = $__0.buffersToStream,
     buffersToStreamable = $__0.buffersToStreamable;
-var $__0 = $traceurRuntime.assertObject(require('./buffer.js')),
-    streamToBuffer = $__0.streamToBuffer,
-    streamableToBuffer = $__0.streamableToBuffer,
-    bufferToStream = $__0.bufferToStream,
-    bufferToStreamable = $__0.bufferToStreamable;
-var $__0 = $traceurRuntime.assertObject(require('./text.js')),
-    streamToText = $__0.streamToText,
-    streamableToText = $__0.streamableToText,
-    textToStream = $__0.textToStream,
-    textToStreamable = $__0.textToStreamable;
-var $__0 = $traceurRuntime.assertObject(require('./json.js')),
-    streamToJson = $__0.streamToJson,
-    streamableToJson = $__0.streamableToJson,
-    jsonToStream = $__0.jsonToStream,
-    jsonToStreamable = $__0.jsonToStreamable;
-var $__0 = $traceurRuntime.assertObject(require('./streamable.js')),
-    streamToStreamable = $__0.streamToStreamable,
-    reuseStream = $__0.reuseStream,
-    reuseStreamable = $__0.reuseStreamable,
-    unreuseStreamable = $__0.unreuseStreamable;
-var $__0 = $traceurRuntime.assertObject(require('./node-stream.js')),
-    nodeToQuiverReadStream = $__0.nodeToQuiverReadStream,
-    nodeToQuiverWriteStream = $__0.nodeToQuiverWriteStream;
-var $__0 = $traceurRuntime.assertObject(require('./empty.js')),
-    emptyReadStream = $__0.emptyReadStream,
-    emptyWriteStream = $__0.emptyWriteStream,
-    emptyStreamable = $__0.emptyStreamable;
-var pipeStream = $traceurRuntime.assertObject(require('./pipe.js')).pipeStream;
-var createChannel = $traceurRuntime.assertObject(require('quiver-stream-channel')).createChannel;
+var $__1 = ($__buffer_46_js__ = require("./buffer.js"), $__buffer_46_js__ && $__buffer_46_js__.__esModule && $__buffer_46_js__ || {default: $__buffer_46_js__}),
+    streamToBuffer = $__1.streamToBuffer,
+    streamableToBuffer = $__1.streamableToBuffer,
+    bufferToStream = $__1.bufferToStream,
+    bufferToStreamable = $__1.bufferToStreamable;
+var $__2 = ($__text_46_js__ = require("./text.js"), $__text_46_js__ && $__text_46_js__.__esModule && $__text_46_js__ || {default: $__text_46_js__}),
+    streamToText = $__2.streamToText,
+    streamableToText = $__2.streamableToText,
+    textToStream = $__2.textToStream,
+    textToStreamable = $__2.textToStreamable;
+var $__3 = ($__json_46_js__ = require("./json.js"), $__json_46_js__ && $__json_46_js__.__esModule && $__json_46_js__ || {default: $__json_46_js__}),
+    streamToJson = $__3.streamToJson,
+    streamableToJson = $__3.streamableToJson,
+    jsonToStream = $__3.jsonToStream,
+    jsonToStreamable = $__3.jsonToStreamable;
+var $__4 = ($__streamable_46_js__ = require("./streamable.js"), $__streamable_46_js__ && $__streamable_46_js__.__esModule && $__streamable_46_js__ || {default: $__streamable_46_js__}),
+    streamToStreamable = $__4.streamToStreamable,
+    reuseStream = $__4.reuseStream,
+    reuseStreamable = $__4.reuseStreamable,
+    unreuseStreamable = $__4.unreuseStreamable;
+var $__5 = ($__node_45_stream_46_js__ = require("./node-stream.js"), $__node_45_stream_46_js__ && $__node_45_stream_46_js__.__esModule && $__node_45_stream_46_js__ || {default: $__node_45_stream_46_js__}),
+    nodeToQuiverReadStream = $__5.nodeToQuiverReadStream,
+    nodeToQuiverWriteStream = $__5.nodeToQuiverWriteStream;
+var $__6 = ($__empty_46_js__ = require("./empty.js"), $__empty_46_js__ && $__empty_46_js__.__esModule && $__empty_46_js__ || {default: $__empty_46_js__}),
+    emptyReadStream = $__6.emptyReadStream,
+    emptyWriteStream = $__6.emptyWriteStream,
+    emptyStreamable = $__6.emptyStreamable;
+var pipeStream = ($__pipe_46_js__ = require("./pipe.js"), $__pipe_46_js__ && $__pipe_46_js__.__esModule && $__pipe_46_js__ || {default: $__pipe_46_js__}).pipeStream;
+var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
 ;

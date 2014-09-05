@@ -1,8 +1,10 @@
 import 'traceur'
 
-import { 
+import fs from 'fs'
+
+var { 
   readFileSync, createReadStream, createWriteStream
-} from 'fs'
+} = fs
 
 import { 
   nodeToQuiverReadStream, nodeToQuiverWriteStream, streamToText

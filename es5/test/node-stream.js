@@ -1,14 +1,19 @@
 "use strict";
-require('traceur');
-var $__0 = $traceurRuntime.assertObject(require('fs')),
-    readFileSync = $__0.readFileSync,
-    createReadStream = $__0.createReadStream,
-    createWriteStream = $__0.createWriteStream;
-var $__0 = $traceurRuntime.assertObject(require('../lib/stream-util.js')),
-    nodeToQuiverReadStream = $__0.nodeToQuiverReadStream,
-    nodeToQuiverWriteStream = $__0.nodeToQuiverWriteStream,
-    streamToText = $__0.streamToText;
-var enableDebug = $traceurRuntime.assertObject(require('quiver-promise')).enableDebug;
+var $__traceur_64_0_46_0_46_58__,
+    $__fs__,
+    $___46__46__47_lib_47_stream_45_util_46_js__,
+    $__quiver_45_promise__;
+($__traceur_64_0_46_0_46_58__ = require("traceur"), $__traceur_64_0_46_0_46_58__ && $__traceur_64_0_46_0_46_58__.__esModule && $__traceur_64_0_46_0_46_58__ || {default: $__traceur_64_0_46_0_46_58__});
+var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
+var $__3 = fs,
+    readFileSync = $__3.readFileSync,
+    createReadStream = $__3.createReadStream,
+    createWriteStream = $__3.createWriteStream;
+var $__1 = ($___46__46__47_lib_47_stream_45_util_46_js__ = require("../lib/stream-util.js"), $___46__46__47_lib_47_stream_45_util_46_js__ && $___46__46__47_lib_47_stream_45_util_46_js__.__esModule && $___46__46__47_lib_47_stream_45_util_46_js__ || {default: $___46__46__47_lib_47_stream_45_util_46_js__}),
+    nodeToQuiverReadStream = $__1.nodeToQuiverReadStream,
+    nodeToQuiverWriteStream = $__1.nodeToQuiverWriteStream,
+    streamToText = $__1.streamToText;
+var enableDebug = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).enableDebug;
 enableDebug({timeout: 1000});
 var sampleFile = 'test/sample.txt';
 var tempWrite = 'test/temp.txt';

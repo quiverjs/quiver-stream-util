@@ -1,6 +1,8 @@
 "use strict";
-require('traceur');
-var $__0 = $traceurRuntime.assertObject(require('../lib/stream-util.js')),
+var $__traceur_64_0_46_0_46_58__,
+    $___46__46__47_lib_47_stream_45_util_46_js__;
+($__traceur_64_0_46_0_46_58__ = require("traceur"), $__traceur_64_0_46_0_46_58__ && $__traceur_64_0_46_0_46_58__.__esModule && $__traceur_64_0_46_0_46_58__ || {default: $__traceur_64_0_46_0_46_58__});
+var $__0 = ($___46__46__47_lib_47_stream_45_util_46_js__ = require("../lib/stream-util.js"), $___46__46__47_lib_47_stream_45_util_46_js__ && $___46__46__47_lib_47_stream_45_util_46_js__.__esModule && $___46__46__47_lib_47_stream_45_util_46_js__ || {default: $___46__46__47_lib_47_stream_45_util_46_js__}),
     pipeStream = $__0.pipeStream,
     createChannel = $__0.createChannel,
     buffersToStream = $__0.buffersToStream,
@@ -13,9 +15,9 @@ var buffers = ['one ', 'two ', 'three'];
 describe('pipestream test', (function() {
   it('should pipe successfully', (function() {
     var sourceStream = buffersToStream(buffers);
-    var $__0 = $traceurRuntime.assertObject(createChannel()),
-        writeStream = $__0.writeStream,
-        readStream = $__0.readStream;
+    var $__1 = createChannel(),
+        writeStream = $__1.writeStream,
+        readStream = $__1.readStream;
     var p1 = pipeStream(sourceStream, writeStream);
     var p2 = streamToText(readStream).then((function(text) {
       return text.should.equal('one two three');
@@ -23,16 +25,17 @@ describe('pipestream test', (function() {
     return Promise.all([p1, p2]);
   }));
   it('should write fail', (function() {
-    var $__0 = $traceurRuntime.assertObject(createChannel()),
-        writeStream1 = $__0.writeStream,
-        readStream1 = $__0.readStream;
-    var $__0 = $traceurRuntime.assertObject(createChannel()),
-        writeStream2 = $__0.writeStream,
-        readStream2 = $__0.readStream;
+    var $__1 = createChannel(),
+        writeStream1 = $__1.writeStream,
+        readStream1 = $__1.readStream;
+    var $__1 = createChannel(),
+        writeStream2 = $__1.writeStream,
+        readStream2 = $__1.readStream;
     var p1 = pipeStream(readStream1, writeStream2).should.be.rejected;
-    var p2 = readStream2.read().then((function($__0) {
-      var closed = $__0.closed,
-          data = $__0.data;
+    var p2 = readStream2.read().then((function($__1) {
+      var $__2 = $__1,
+          closed = $__2.closed,
+          data = $__2.data;
       data.should.equal('one');
       readStream2.closeRead(new Error());
     }));
@@ -41,18 +44,19 @@ describe('pipestream test', (function() {
     return Promise.all([p1, p2, p3]);
   }));
   it('should read fail', (function() {
-    var $__0 = $traceurRuntime.assertObject(createChannel()),
-        writeStream1 = $__0.writeStream,
-        readStream1 = $__0.readStream;
-    var $__0 = $traceurRuntime.assertObject(createChannel()),
-        writeStream2 = $__0.writeStream,
-        readStream2 = $__0.readStream;
+    var $__1 = createChannel(),
+        writeStream1 = $__1.writeStream,
+        readStream1 = $__1.readStream;
+    var $__1 = createChannel(),
+        writeStream2 = $__1.writeStream,
+        readStream2 = $__1.readStream;
     var p1 = pipeStream(readStream1, writeStream2).should.be.rejected;
     writeStream1.write('one');
     writeStream1.closeWrite(new Error());
-    var p2 = readStream2.read().then((function($__0) {
-      var closed = $__0.closed,
-          data = $__0.data;
+    var p2 = readStream2.read().then((function($__1) {
+      var $__2 = $__1,
+          closed = $__2.closed,
+          data = $__2.data;
       data.should.equal('one');
       return readStream2.read().should.be.rejected;
     }));

@@ -6,7 +6,7 @@
   },
   "name": "quiver-stream-util",
   "desription": "Utilities for converting and handling quiver streams",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/quiverjs/stream-util",
   "repository": {
     "url": "git@github.com:quiverjs/stream-util.git"

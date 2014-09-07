@@ -81,6 +81,9 @@ Object.defineProperties(exports, {
   createChannel: {get: function() {
       return createChannel;
     }},
+  pushbackStream: {get: function() {
+      return pushbackStream;
+    }},
   __esModule: {value: true}
 });
 var $__buffers_46_js__,
@@ -88,6 +91,7 @@ var $__buffers_46_js__,
     $__text_46_js__,
     $__json_46_js__,
     $__streamable_46_js__,
+    $__pushback__,
     $__node_45_stream_46_js__,
     $__empty_46_js__,
     $__pipe_46_js__,
@@ -117,13 +121,14 @@ var $__4 = ($__streamable_46_js__ = require("./streamable.js"), $__streamable_46
     reuseStream = $__4.reuseStream,
     reuseStreamable = $__4.reuseStreamable,
     unreuseStreamable = $__4.unreuseStreamable;
-var $__5 = ($__node_45_stream_46_js__ = require("./node-stream.js"), $__node_45_stream_46_js__ && $__node_45_stream_46_js__.__esModule && $__node_45_stream_46_js__ || {default: $__node_45_stream_46_js__}),
-    nodeToQuiverReadStream = $__5.nodeToQuiverReadStream,
-    nodeToQuiverWriteStream = $__5.nodeToQuiverWriteStream;
-var $__6 = ($__empty_46_js__ = require("./empty.js"), $__empty_46_js__ && $__empty_46_js__.__esModule && $__empty_46_js__ || {default: $__empty_46_js__}),
-    emptyReadStream = $__6.emptyReadStream,
-    emptyWriteStream = $__6.emptyWriteStream,
-    emptyStreamable = $__6.emptyStreamable;
+var pushbackStream = ($__pushback__ = require("./pushback"), $__pushback__ && $__pushback__.__esModule && $__pushback__ || {default: $__pushback__}).pushbackStream;
+var $__6 = ($__node_45_stream_46_js__ = require("./node-stream.js"), $__node_45_stream_46_js__ && $__node_45_stream_46_js__.__esModule && $__node_45_stream_46_js__ || {default: $__node_45_stream_46_js__}),
+    nodeToQuiverReadStream = $__6.nodeToQuiverReadStream,
+    nodeToQuiverWriteStream = $__6.nodeToQuiverWriteStream;
+var $__7 = ($__empty_46_js__ = require("./empty.js"), $__empty_46_js__ && $__empty_46_js__.__esModule && $__empty_46_js__ || {default: $__empty_46_js__}),
+    emptyReadStream = $__7.emptyReadStream,
+    emptyWriteStream = $__7.emptyWriteStream,
+    emptyStreamable = $__7.emptyStreamable;
 var pipeStream = ($__pipe_46_js__ = require("./pipe.js"), $__pipe_46_js__ && $__pipe_46_js__.__esModule && $__pipe_46_js__ || {default: $__pipe_46_js__}).pipeStream;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
 ;

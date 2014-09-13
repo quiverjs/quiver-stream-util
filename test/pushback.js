@@ -21,6 +21,12 @@ describe('stream pushback test', () => {
     var readStream = buffersToStream(testBuffers)
     readStream = pushbackStream(readStream, pushbackBuffers)
 
+    var { data } = yield readStream.peek()
+    data.should.equal('before1 ')
+
+    var { data } = yield readStream.peek()
+    data.should.equal('before1 ')
+
     yield streamToText(readStream).should.eventually.equal(
       'before1 before2 foo bar')
   }))

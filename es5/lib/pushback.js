@@ -14,13 +14,14 @@ var pushbackStream = (function(readStream) {
     return readStream;
   }
   var newReadStream = Object.create(readStream);
-  newReadStream.read = (function() {
+  var doRead = (function() {
     if (buffers.length == 0) {
       return readStream.read();
     } else {
       return resolve({data: buffers.shift()});
     }
   });
+  newReadStream.read = doRead;
   newReadStream.closeRead = (function(err) {
     buffers = [];
     return readStream.closeRead(err);
@@ -31,10 +32,10 @@ var pushbackStream = (function(readStream) {
   newReadStream.peek = (function() {
     if (buffers[0])
       return resolve({data: buffers[0]});
-    return readStream.read((function($__1) {
+    return doRead((function($__1) {
       var $__2 = $__1,
-          data = $__2.data,
-          closed = $__2.closed;
+          closed = $__2.closed,
+          data = $__2.data;
       if (closed)
         return {closed: closed};
       buffers.push(data);

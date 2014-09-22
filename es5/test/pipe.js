@@ -1,7 +1,7 @@
 "use strict";
-var $__traceur_64_0_46_0_46_58__,
+var $__traceur_64_0_46_0_46_6__,
     $___46__46__47_lib_47_stream_45_util_46_js__;
-($__traceur_64_0_46_0_46_58__ = require("traceur"), $__traceur_64_0_46_0_46_58__ && $__traceur_64_0_46_0_46_58__.__esModule && $__traceur_64_0_46_0_46_58__ || {default: $__traceur_64_0_46_0_46_58__});
+($__traceur_64_0_46_0_46_6__ = require("traceur"), $__traceur_64_0_46_0_46_6__ && $__traceur_64_0_46_0_46_6__.__esModule && $__traceur_64_0_46_0_46_6__ || {default: $__traceur_64_0_46_0_46_6__});
 var $__0 = ($___46__46__47_lib_47_stream_45_util_46_js__ = require("../lib/stream-util.js"), $___46__46__47_lib_47_stream_45_util_46_js__ && $___46__46__47_lib_47_stream_45_util_46_js__.__esModule && $___46__46__47_lib_47_stream_45_util_46_js__ || {default: $___46__46__47_lib_47_stream_45_util_46_js__}),
     pipeStream = $__0.pipeStream,
     createChannel = $__0.createChannel,
@@ -28,14 +28,14 @@ describe('pipestream test', (function() {
     var $__1 = createChannel(),
         writeStream1 = $__1.writeStream,
         readStream1 = $__1.readStream;
-    var $__1 = createChannel(),
-        writeStream2 = $__1.writeStream,
-        readStream2 = $__1.readStream;
+    var $__2 = createChannel(),
+        writeStream2 = $__2.writeStream,
+        readStream2 = $__2.readStream;
     var p1 = pipeStream(readStream1, writeStream2).should.be.rejected;
-    var p2 = readStream2.read().then((function($__1) {
-      var $__2 = $__1,
-          closed = $__2.closed,
-          data = $__2.data;
+    var p2 = readStream2.read().then((function($__3) {
+      var $__4 = $__3,
+          closed = $__4.closed,
+          data = $__4.data;
       data.should.equal('one');
       readStream2.closeRead(new Error());
     }));
@@ -47,16 +47,16 @@ describe('pipestream test', (function() {
     var $__1 = createChannel(),
         writeStream1 = $__1.writeStream,
         readStream1 = $__1.readStream;
-    var $__1 = createChannel(),
-        writeStream2 = $__1.writeStream,
-        readStream2 = $__1.readStream;
+    var $__2 = createChannel(),
+        writeStream2 = $__2.writeStream,
+        readStream2 = $__2.readStream;
     var p1 = pipeStream(readStream1, writeStream2).should.be.rejected;
     writeStream1.write('one');
     writeStream1.closeWrite(new Error());
-    var p2 = readStream2.read().then((function($__1) {
-      var $__2 = $__1,
-          closed = $__2.closed,
-          data = $__2.data;
+    var p2 = readStream2.read().then((function($__3) {
+      var $__4 = $__3,
+          closed = $__4.closed,
+          data = $__4.data;
       data.should.equal('one');
       return readStream2.read().should.be.rejected;
     }));

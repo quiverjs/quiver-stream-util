@@ -9,6 +9,9 @@ Object.defineProperties(exports, {
   textToStream: {get: function() {
       return textToStream;
     }},
+  toTextToStreamable: {get: function() {
+      return toTextToStreamable;
+    }},
   textToStreamable: {get: function() {
       return textToStreamable;
     }},
@@ -22,7 +25,7 @@ var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-c
 var $__2 = ($__buffer_46_js__ = require("./buffer.js"), $__buffer_46_js__ && $__buffer_46_js__.__esModule && $__buffer_46_js__ || {default: $__buffer_46_js__}),
     streamToBuffer = $__2.streamToBuffer,
     streamableToBuffer = $__2.streamableToBuffer,
-    bufferToStreamable = $__2.bufferToStreamable;
+    toBufferToStreamable = $__2.toBufferToStreamable;
 var streamToText = (function(readStream) {
   return streamToBuffer(readStream).then((function(buffer) {
     return buffer.toString();
@@ -49,8 +52,23 @@ var textToStream = (function(text) {
   writeStream.closeWrite();
   return readStream;
 });
-var textToStreamable = (function(text) {
-  var streamable = bufferToStreamable(new Buffer(text));
-  streamable.contentType = 'text/plain';
+var toTextToStreamable = (function(toText) {
+  var contentType = arguments[1] !== (void 0) ? arguments[1] : 'text/plain';
+  var buffer = null;
+  var toBuffer = (function() {
+    if (!buffer)
+      buffer = new Buffer(toText());
+    return buffer;
+  });
+  var streamable = toBufferToStreamable(toBuffer);
+  streamable.toText = (function() {
+    return resolve(toText());
+  });
+  streamable.contentType = contentType;
   return streamable;
+});
+var textToStreamable = (function(text) {
+  return toTextToStreamable((function() {
+    return text;
+  }));
 });

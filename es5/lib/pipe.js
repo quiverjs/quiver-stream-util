@@ -17,10 +17,10 @@ var pipeStream = (function(readStream, writeStream) {
         readStream.closeRead();
         return resolve();
       }
-      return readStream.read().then((function($__2) {
-        var $__3 = $__2,
-            closed = $__3.closed,
-            data = $__3.data;
+      return readStream.read().then((function($__3) {
+        var $__4 = $__3,
+            closed = $__4.closed,
+            data = $__4.data;
         if (closed) {
           writeStream.closeWrite();
           return resolve();

@@ -15,19 +15,28 @@ Object.defineProperties(exports, {
   __esModule: {value: true}
 });
 var $__quiver_45_object__,
+    $__quiver_45_error__,
     $__quiver_45_promise__,
     $__text_46_js__;
 var copy = ($__quiver_45_object__ = require("quiver-object"), $__quiver_45_object__ && $__quiver_45_object__.__esModule && $__quiver_45_object__ || {default: $__quiver_45_object__}).copy;
+var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
-var $__2 = ($__text_46_js__ = require("./text.js"), $__text_46_js__ && $__text_46_js__.__esModule && $__text_46_js__ || {default: $__text_46_js__}),
-    streamToText = $__2.streamToText,
-    streamableToText = $__2.streamableToText,
-    textToStreamable = $__2.textToStreamable;
-var $__3 = JSON,
-    parseJson = $__3.parse,
-    stringify = $__3.stringify;
+var $__3 = ($__text_46_js__ = require("./text.js"), $__text_46_js__ && $__text_46_js__.__esModule && $__text_46_js__ || {default: $__text_46_js__}),
+    streamToText = $__3.streamToText,
+    streamableToText = $__3.streamableToText,
+    toTextToStreamable = $__3.toTextToStreamable;
+var $__4 = JSON,
+    parseJson = $__4.parse,
+    stringify = $__4.stringify;
 var streamToJson = (function(readStream) {
-  return streamToText(readStream).then(parseJson);
+  return streamToText(readStream).then((function(text) {
+    try {
+      var json = parseJson(text);
+    } catch (err) {
+      throw error(400, 'error parsing json stream: ' + err);
+    }
+    return json;
+  }));
 });
 var streamableToJson = (function(streamable) {
   if (streamable.toJson)
@@ -38,14 +47,22 @@ var streamableToJson = (function(streamable) {
         return resolve(copy(json));
       });
     }
-    return json;
+    return copy(json);
   }));
 });
 var jsonToStream = (function(json) {
   return textToStream(stringify(json));
 });
 var jsonToStreamable = (function(json) {
-  var streamable = textToStreamable(stringify(json));
-  streamable.contentType = 'application/json';
+  var text = null;
+  var toText = (function() {
+    if (!text)
+      text = stringify(json);
+    return text;
+  });
+  var streamable = toTextToStreamable(toText, 'application/json');
+  streamable.toJson = (function() {
+    return resolve(copy(json));
+  });
   return streamable;
 });

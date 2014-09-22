@@ -43,8 +43,8 @@ var nodeToQuiverReadStream = (function(nodeRead) {
     }));
   });
   var doPipe = (function() {
-    return writeStream.prepareWrite().then((function($__2) {
-      var closed = $__2.closed;
+    return writeStream.prepareWrite().then((function($__3) {
+      var closed = $__3.closed;
       if (closed)
         return nodeRead.resume();
       doRead((function(data) {
@@ -64,10 +64,10 @@ var nodeToQuiverWriteStream = (function(nodeWrite) {
     return readStream.closeRead(err);
   }));
   var doPipe = (function() {
-    return readStream.read().then((function($__2) {
-      var $__3 = $__2,
-          closed = $__3.closed,
-          data = $__3.data;
+    return readStream.read().then((function($__3) {
+      var $__4 = $__3,
+          closed = $__4.closed,
+          data = $__4.data;
       if (closed)
         return nodeWrite.end();
       var ready = nodeWrite.write(data);

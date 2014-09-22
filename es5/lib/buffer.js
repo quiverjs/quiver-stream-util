@@ -9,6 +9,9 @@ Object.defineProperties(exports, {
   bufferToStream: {get: function() {
       return bufferToStream;
     }},
+  toBufferToStreamable: {get: function() {
+      return toBufferToStreamable;
+    }},
   bufferToStreamable: {get: function() {
       return bufferToStreamable;
     }},
@@ -53,18 +56,25 @@ var bufferToStream = (function(buffer) {
   writeStream.closeWrite(null);
   return readStream;
 });
-var bufferToStreamable = (function(buffer) {
+var toBufferToStreamable = (function(toBuffer) {
   return ({
     reusable: true,
-    contentLength: buffer.length,
+    get contentLength() {
+      return toBuffer().length;
+    },
     toBuffer: (function() {
-      return resolve(buffer);
+      return resolve(toBuffer());
     }),
     toBuffers: (function() {
-      return resolve([buffer]);
+      return resolve([toBuffer()]);
     }),
     toStream: (function() {
-      return resolve(bufferToStream(buffer));
+      return resolve(bufferToStream(toBuffer()));
     })
   });
+});
+var bufferToStreamable = (function(buffer) {
+  return toBufferToStreamable((function() {
+    return buffer;
+  }));
 });

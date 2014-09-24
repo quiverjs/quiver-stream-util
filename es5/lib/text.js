@@ -68,7 +68,8 @@ var toTextToStreamable = (function(toText) {
   return streamable;
 });
 var textToStreamable = (function(text) {
+  var contentType = arguments[1] !== (void 0) ? arguments[1] : 'text/plain';
   return toTextToStreamable((function() {
     return text;
-  }));
+  }), contentType);
 });

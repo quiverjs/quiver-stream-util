@@ -48,6 +48,9 @@ Object.defineProperties(exports, {
   jsonToStreamable: {get: function() {
       return jsonToStreamable;
     }},
+  closeStreamable: {get: function() {
+      return closeStreamable;
+    }},
   streamToStreamable: {get: function() {
       return streamToStreamable;
     }},
@@ -117,6 +120,7 @@ var $__3 = ($__json_46_js__ = require("./json.js"), $__json_46_js__ && $__json_4
     jsonToStream = $__3.jsonToStream,
     jsonToStreamable = $__3.jsonToStreamable;
 var $__4 = ($__streamable_46_js__ = require("./streamable.js"), $__streamable_46_js__ && $__streamable_46_js__.__esModule && $__streamable_46_js__ || {default: $__streamable_46_js__}),
+    closeStreamable = $__4.closeStreamable,
     streamToStreamable = $__4.streamToStreamable,
     reuseStream = $__4.reuseStream,
     reuseStreamable = $__4.reuseStreamable,

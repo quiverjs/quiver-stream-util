@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperties(exports, {
+  closeStreamable: {get: function() {
+      return closeStreamable;
+    }},
   streamToStreamable: {get: function() {
       return streamToStreamable;
     }},
@@ -22,6 +25,13 @@ var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error_
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
 var buffersToStream = ($__buffers_46_js__ = require("./buffers.js"), $__buffers_46_js__ && $__buffers_46_js__.__esModule && $__buffers_46_js__ || {default: $__buffers_46_js__}).buffersToStream;
+var closeStreamable = (function(streamable) {
+  if (streamable.reusable)
+    return resolve();
+  return streamable.toStream().then((function(readStream) {
+    return readStream.closeRead();
+  }));
+});
 var streamToStreamable = (function(readStream) {
   var opened = false;
   return {

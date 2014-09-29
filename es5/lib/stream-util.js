@@ -69,6 +69,9 @@ Object.defineProperties(exports, {
   nodeToQuiverWriteStream: {get: function() {
       return nodeToQuiverWriteStream;
     }},
+  nodeReadToStreamable: {get: function() {
+      return nodeReadToStreamable;
+    }},
   emptyReadStream: {get: function() {
       return emptyReadStream;
     }},
@@ -128,7 +131,8 @@ var $__4 = ($__streamable_46_js__ = require("./streamable.js"), $__streamable_46
 var pushbackStream = ($__pushback__ = require("./pushback"), $__pushback__ && $__pushback__.__esModule && $__pushback__ || {default: $__pushback__}).pushbackStream;
 var $__6 = ($__node_45_stream_46_js__ = require("./node-stream.js"), $__node_45_stream_46_js__ && $__node_45_stream_46_js__.__esModule && $__node_45_stream_46_js__ || {default: $__node_45_stream_46_js__}),
     nodeToQuiverReadStream = $__6.nodeToQuiverReadStream,
-    nodeToQuiverWriteStream = $__6.nodeToQuiverWriteStream;
+    nodeToQuiverWriteStream = $__6.nodeToQuiverWriteStream,
+    nodeReadToStreamable = $__6.nodeReadToStreamable;
 var $__7 = ($__empty_46_js__ = require("./empty.js"), $__empty_46_js__ && $__empty_46_js__.__esModule && $__empty_46_js__ || {default: $__empty_46_js__}),
     emptyReadStream = $__7.emptyReadStream,
     emptyWriteStream = $__7.emptyWriteStream,

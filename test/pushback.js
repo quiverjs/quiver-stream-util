@@ -5,7 +5,7 @@ import {
   streamToText,
   buffersToStream,
   pushbackStream
-} from '../lib/stream-util.js'
+} from '../lib/stream-util'
 
 import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'

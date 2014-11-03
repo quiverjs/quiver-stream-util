@@ -1,17 +1,13 @@
 import 'traceur'
-
 import fs from 'fs'
-
-var { 
-  readFileSync, createReadStream, createWriteStream
-} = fs
 
 import { 
   nodeToQuiverReadStream, nodeToQuiverWriteStream, streamToText
 } from '../lib/stream-util.js'
 
-import { enableDebug } from 'quiver-promise'
-enableDebug({timeout: 1000})
+var { 
+  readFileSync, createReadStream, createWriteStream
+} = fs
 
 var sampleFile = 'test/sample.txt'
 var tempWrite = 'test/temp.txt'

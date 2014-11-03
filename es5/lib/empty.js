@@ -42,6 +42,12 @@ var emptyStreamable = (function(closeErr) {
     contentLength: 0,
     toStream: (function() {
       return resolve(emptyReadStream(closeErr));
+    }),
+    toText: (function() {
+      return resolve('');
+    }),
+    toBuffer: (function() {
+      return resolve(new Buffer(0));
     })
   });
 });

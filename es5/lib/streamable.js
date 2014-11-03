@@ -20,11 +20,11 @@ Object.defineProperties(exports, {
 var $__quiver_45_error__,
     $__quiver_45_promise__,
     $__quiver_45_stream_45_channel__,
-    $__buffers_46_js__;
+    $__buffers__;
 var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
-var buffersToStream = ($__buffers_46_js__ = require("./buffers.js"), $__buffers_46_js__ && $__buffers_46_js__.__esModule && $__buffers_46_js__ || {default: $__buffers_46_js__}).buffersToStream;
+var buffersToStream = ($__buffers__ = require("./buffers"), $__buffers__ && $__buffers__.__esModule && $__buffers__ || {default: $__buffers__}).buffersToStream;
 var closeStreamable = (function(streamable) {
   if (streamable.reusable)
     return resolve();

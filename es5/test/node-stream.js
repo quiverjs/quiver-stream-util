@@ -1,20 +1,17 @@
 "use strict";
-var $__traceur_64_0_46_0_46_6__,
+var $__traceur_64_0_46_0_46_7__,
     $__fs__,
-    $___46__46__47_lib_47_stream_45_util_46_js__,
-    $__quiver_45_promise__;
-($__traceur_64_0_46_0_46_6__ = require("traceur"), $__traceur_64_0_46_0_46_6__ && $__traceur_64_0_46_0_46_6__.__esModule && $__traceur_64_0_46_0_46_6__ || {default: $__traceur_64_0_46_0_46_6__});
+    $___46__46__47_lib_47_stream_45_util_46_js__;
+($__traceur_64_0_46_0_46_7__ = require("traceur"), $__traceur_64_0_46_0_46_7__ && $__traceur_64_0_46_0_46_7__.__esModule && $__traceur_64_0_46_0_46_7__ || {default: $__traceur_64_0_46_0_46_7__});
 var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
-var $__3 = fs,
-    readFileSync = $__3.readFileSync,
-    createReadStream = $__3.createReadStream,
-    createWriteStream = $__3.createWriteStream;
 var $__1 = ($___46__46__47_lib_47_stream_45_util_46_js__ = require("../lib/stream-util.js"), $___46__46__47_lib_47_stream_45_util_46_js__ && $___46__46__47_lib_47_stream_45_util_46_js__.__esModule && $___46__46__47_lib_47_stream_45_util_46_js__ || {default: $___46__46__47_lib_47_stream_45_util_46_js__}),
     nodeToQuiverReadStream = $__1.nodeToQuiverReadStream,
     nodeToQuiverWriteStream = $__1.nodeToQuiverWriteStream,
     streamToText = $__1.streamToText;
-var enableDebug = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).enableDebug;
-enableDebug({timeout: 1000});
+var $__2 = fs,
+    readFileSync = $__2.readFileSync,
+    createReadStream = $__2.createReadStream,
+    createWriteStream = $__2.createWriteStream;
 var sampleFile = 'test/sample.txt';
 var tempWrite = 'test/temp.txt';
 var expectedContent = readFileSync(sampleFile).toString();

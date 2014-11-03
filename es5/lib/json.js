@@ -17,11 +17,11 @@ Object.defineProperties(exports, {
 var $__quiver_45_object__,
     $__quiver_45_error__,
     $__quiver_45_promise__,
-    $__text_46_js__;
+    $__text__;
 var copy = ($__quiver_45_object__ = require("quiver-object"), $__quiver_45_object__ && $__quiver_45_object__.__esModule && $__quiver_45_object__ || {default: $__quiver_45_object__}).copy;
 var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
-var $__3 = ($__text_46_js__ = require("./text.js"), $__text_46_js__ && $__text_46_js__.__esModule && $__text_46_js__ || {default: $__text_46_js__}),
+var $__3 = ($__text__ = require("./text"), $__text__ && $__text__.__esModule && $__text__ || {default: $__text__}),
     streamToText = $__3.streamToText,
     streamableToText = $__3.streamableToText,
     toTextToStreamable = $__3.toTextToStreamable;

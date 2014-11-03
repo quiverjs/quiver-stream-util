@@ -19,10 +19,10 @@ Object.defineProperties(exports, {
 });
 var $__quiver_45_promise__,
     $__quiver_45_stream_45_channel__,
-    $__buffers_46_js__;
+    $__buffers__;
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
-var $__2 = ($__buffers_46_js__ = require("./buffers.js"), $__buffers_46_js__ && $__buffers_46_js__.__esModule && $__buffers_46_js__ || {default: $__buffers_46_js__}),
+var $__2 = ($__buffers__ = require("./buffers"), $__buffers__ && $__buffers__.__esModule && $__buffers__ || {default: $__buffers__}),
     streamToBuffers = $__2.streamToBuffers,
     streamableToBuffers = $__2.streamableToBuffers;
 var nodeBuffers = (function(buffers) {
@@ -49,6 +49,8 @@ var streamableToBuffer = (function(streamable) {
   }));
 });
 var bufferToStream = (function(buffer) {
+  if (!Buffer.isBuffer(buffer))
+    buffer = new Buffer(buffer);
   var $__3 = createChannel(),
       readStream = $__3.readStream,
       writeStream = $__3.writeStream;
@@ -74,6 +76,8 @@ var toBufferToStreamable = (function(toBuffer) {
   });
 });
 var bufferToStreamable = (function(buffer) {
+  if (!Buffer.isBuffer(buffer))
+    buffer = new Buffer(buffer);
   return toBufferToStreamable((function() {
     return buffer;
   }));

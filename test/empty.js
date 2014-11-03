@@ -1,7 +1,8 @@
 import 'traceur'
-import { emptyReadStream, emptyWriteStream } from '../lib/empty.js'
+import chai from 'chai'
+import { emptyReadStream, emptyWriteStream } from '../lib/empty'
 
-var should = require('should')
+var should = chai.should()
 
 describe('empty stream test', () => {
   it('test empty read stream', () => {

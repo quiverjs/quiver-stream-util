@@ -2,7 +2,7 @@ import 'traceur'
 import { createChannel } from 'quiver-stream-channel'
 import {
   streamToText
-} from '../lib/stream-util.js'
+} from '../lib/stream-util'
 
 var chai = require('chai')
 var should = chai.should()

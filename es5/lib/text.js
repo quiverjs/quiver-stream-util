@@ -19,10 +19,10 @@ Object.defineProperties(exports, {
 });
 var $__quiver_45_promise__,
     $__quiver_45_stream_45_channel__,
-    $__buffer_46_js__;
+    $__buffer__;
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
-var $__2 = ($__buffer_46_js__ = require("./buffer.js"), $__buffer_46_js__ && $__buffer_46_js__.__esModule && $__buffer_46_js__ || {default: $__buffer_46_js__}),
+var $__2 = ($__buffer__ = require("./buffer"), $__buffer__ && $__buffer__.__esModule && $__buffer__ || {default: $__buffer__}),
     streamToBuffer = $__2.streamToBuffer,
     streamableToBuffer = $__2.streamableToBuffer,
     toBufferToStreamable = $__2.toBufferToStreamable;

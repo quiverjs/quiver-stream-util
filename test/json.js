@@ -2,7 +2,7 @@ import 'traceur'
 import { 
   streamToJson, buffersToStream, textToStreamable,
   jsonToStreamable, streamableToJson
-} from '../lib/stream-util.js'
+} from '../lib/stream-util'
 
 import { async } from 'quiver-promise'
 

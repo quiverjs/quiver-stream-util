@@ -6,25 +6,25 @@
   },
   "name": "quiver-stream-util",
   "desription": "Utilities for converting and handling quiver streams",
-  "version": "1.2.0",
-  "homepage": "https://github.com/quiverjs/stream-util",
+  "version": "1.2.1",
+  "homepage": "https://github.com/quiverjs/quiver-stream-util",
   "repository": {
-    "url": "git@github.com:quiverjs/stream-util.git"
+    "url": "git@github.com:quiverjs/quiver-stream-util.git"
   },
   "dependencies": {
-    "traceur": "0.0.72",
-    "quiver-error": "~0.1.1",
-    "quiver-object": "~1.2.1",
-    "quiver-promise": "~0.2.0",
-    "quiver-stream-channel": "~1.2.0"
+    "traceur": "0.0.79",
+    "quiver-error": "~1.0.1",
+    "quiver-object": "~1.2.2",
+    "quiver-promise": "~1.0.0",
+    "quiver-stream-channel": "~1.2.1"
   },
   "devDependencies": {
-    "chai": "^1.9.2",
+    "chai": "^1.10.0",
     "mocha": "^2.0.1",
     "chai-as-promised": "^4.1.1"
   },
   "bugs": {
-    "url": "https://github.com/quiverjs/stream-util/issues"
+    "url": "https://github.com/quiverjs/quiver-stream-util/issues"
   },
   "licenses": {
     "type": "MIT",

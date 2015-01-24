@@ -11,14 +11,14 @@ import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 
 chai.use(chaiAsPromised)
-var should = chai.should()
+let should = chai.should()
 
 describe('stream pushback test', () => {
   it('should emit pushed back buffers first', async(function*() {
-    var testBuffers = ['foo ', 'bar']
-    var pushbackBuffers = ['before1 ', 'before2 ']
+    let testBuffers = ['foo ', 'bar']
+    let pushbackBuffers = ['before1 ', 'before2 ']
 
-    var readStream = buffersToStream(testBuffers)
+    let readStream = buffersToStream(testBuffers)
     readStream = pushbackStream(readStream, pushbackBuffers)
 
     var { data } = yield readStream.peek()
@@ -32,8 +32,8 @@ describe('stream pushback test', () => {
   }))
 
   it('nested stream pushback test', async(function*() {
-    var testBuffers = ['six ', 'seven']
-    var readStream = buffersToStream(testBuffers)
+    let testBuffers = ['six ', 'seven']
+    let readStream = buffersToStream(testBuffers)
 
     readStream = pushbackStream(readStream, ['four ', 'five '])
     readStream = pushbackStream(readStream, ['three '])

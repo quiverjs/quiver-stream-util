@@ -9,8 +9,8 @@ var $__quiver_45_promise__;
 var $__0 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
     resolve = $__0.resolve,
     reject = $__0.reject;
-var pipeStream = (function(readStream, writeStream) {
-  var doPipe = (function() {
+let pipeStream = (function(readStream, writeStream) {
+  let doPipe = (function() {
     return writeStream.prepareWrite().then((function($__1) {
       var closed = $__1.closed;
       if (closed) {

@@ -25,20 +25,19 @@ var $__3 = ($__text__ = require("./text"), $__text__ && $__text__.__esModule && 
     streamToText = $__3.streamToText,
     streamableToText = $__3.streamableToText,
     toTextToStreamable = $__3.toTextToStreamable;
-var $__4 = JSON,
+let $__4 = JSON,
     parseJson = $__4.parse,
     stringify = $__4.stringify;
-var streamToJson = (function(readStream) {
+let streamToJson = (function(readStream) {
   return streamToText(readStream).then((function(text) {
     try {
-      var json = parseJson(text);
+      return parseJson(text);
     } catch (err) {
       throw error(400, 'error parsing json stream: ' + err);
     }
-    return json;
   }));
 });
-var streamableToJson = (function(streamable) {
+let streamableToJson = (function(streamable) {
   if (streamable.toJson)
     return resolve(streamable.toJson());
   return streamableToText(streamable).then(parseJson).then((function(json) {
@@ -50,17 +49,17 @@ var streamableToJson = (function(streamable) {
     return copy(json);
   }));
 });
-var jsonToStream = (function(json) {
+let jsonToStream = (function(json) {
   return textToStream(stringify(json));
 });
-var jsonToStreamable = (function(json) {
-  var text = null;
-  var toText = (function() {
+let jsonToStreamable = (function(json) {
+  let text = null;
+  let toText = (function() {
     if (!text)
       text = stringify(json);
     return text;
   });
-  var streamable = toTextToStreamable(toText, 'application/json');
+  let streamable = toTextToStreamable(toText, 'application/json');
   streamable.toJson = (function() {
     return resolve(copy(json));
   });

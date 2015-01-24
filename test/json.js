@@ -6,23 +6,23 @@ import {
 
 import { async } from 'quiver-promise'
 
-var chai = require('chai')
-var should = chai.should()
+let chai = require('chai')
+let should = chai.should()
 
-var originalJson = {
+let originalJson = {
   "foo": "testing 123",
   "bar": [
     "a", "b"
   ]
 }
 
-var testJson = function(json) {
+let testJson = function(json) {
   json.foo.should.equal('testing 123')
   json.bar[0].should.equal('a')
   json.bar[1].should.equal('b')
 }
 
-var testBuffers = [
+let testBuffers = [
   '{ "fo', 'o": "', 'testing ', '123", ', '"bar', '": [ ',
   '"a", "b', '"] }' 
 ]
@@ -38,7 +38,7 @@ describe('basic json test', function() {
     streamToJson(buffersToStream(testBuffers)).then(testJson))
 
   it('should convert json to streamable', async(function*() {
-    var streamable = jsonToStreamable(originalJson)
+    let streamable = jsonToStreamable(originalJson)
 
     should.exist(streamable.toJson)
     should.exist(streamable.toText)
@@ -58,8 +58,8 @@ describe('basic json test', function() {
   }))
 
   it('should convert text to streamble', async(function*() {
-    var jsonText = JSON.stringify(originalJson)
-    var streamable = textToStreamable(jsonText)
+    let jsonText = JSON.stringify(originalJson)
+    let streamable = textToStreamable(jsonText)
 
     should.not.exist(streamable.toJson)
     should.exist(streamable.toText)

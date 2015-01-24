@@ -26,16 +26,16 @@ var $__2 = ($__buffer__ = require("./buffer"), $__buffer__ && $__buffer__.__esMo
     streamToBuffer = $__2.streamToBuffer,
     streamableToBuffer = $__2.streamableToBuffer,
     toBufferToStreamable = $__2.toBufferToStreamable;
-var streamToText = (function(readStream) {
+let streamToText = (function(readStream) {
   return streamToBuffer(readStream).then((function(buffer) {
     return buffer.toString();
   }));
 });
-var streamableToText = (function(streamable) {
+let streamableToText = (function(streamable) {
   if (streamable.toText)
     return resolve(streamable.toText());
   return streamableToBuffer(streamable).then((function(buffer) {
-    var text = buffer.toString();
+    let text = buffer.toString();
     if (streamable.reusable && !streamable.toText) {
       streamable.toText = (function() {
         return resolve(text);
@@ -44,30 +44,30 @@ var streamableToText = (function(streamable) {
     return text;
   }));
 });
-var textToStream = (function(text) {
-  var $__3 = createChannel(),
+let textToStream = (function(text) {
+  let $__3 = createChannel(),
       readStream = $__3.readStream,
       writeStream = $__3.writeStream;
   writeStream.write(new Buffer(text));
   writeStream.closeWrite();
   return readStream;
 });
-var toTextToStreamable = (function(toText) {
+let toTextToStreamable = (function(toText) {
   var contentType = arguments[1] !== (void 0) ? arguments[1] : 'text/plain';
-  var buffer = null;
-  var toBuffer = (function() {
+  let buffer = null;
+  let toBuffer = (function() {
     if (!buffer)
       buffer = new Buffer(toText());
     return buffer;
   });
-  var streamable = toBufferToStreamable(toBuffer);
+  let streamable = toBufferToStreamable(toBuffer);
   streamable.toText = (function() {
     return resolve(toText());
   });
   streamable.contentType = contentType;
   return streamable;
 });
-var textToStreamable = (function(text) {
+let textToStreamable = (function(text) {
   var contentType = arguments[1] !== (void 0) ? arguments[1] : 'text/plain';
   return toTextToStreamable((function() {
     return text;

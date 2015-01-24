@@ -7,12 +7,12 @@ import {
 
 import { promiseChain, resolve } from 'quiver-promise'
 
-var should = chai.should()
+let should = chai.should()
 
-var testBuffers = [ 'foo', 'bar', 'baz' ]
+let testBuffers = [ 'foo', 'bar', 'baz' ]
 
 describe('basic buffer test', () => {
-  var streamable = buffersToStreamable(testBuffers)
+  let streamable = buffersToStreamable(testBuffers)
 
   it('should convert buffers to stream', () =>
     streamable.toStream().then(readStream => 

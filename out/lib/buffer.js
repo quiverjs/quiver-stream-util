@@ -25,18 +25,18 @@ var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-c
 var $__2 = ($__buffers__ = require("./buffers"), $__buffers__ && $__buffers__.__esModule && $__buffers__ || {default: $__buffers__}),
     streamToBuffers = $__2.streamToBuffers,
     streamableToBuffers = $__2.streamableToBuffers;
-var nodeBuffers = (function(buffers) {
+let nodeBuffers = (function(buffers) {
   return buffers.map((function(buffer) {
     return (buffer instanceof Buffer) ? buffer : new Buffer(buffer);
   }));
 });
-var buffersToBuffer = (function(buffers) {
+let buffersToBuffer = (function(buffers) {
   return Buffer.concat(nodeBuffers(buffers));
 });
-var streamToBuffer = (function(readStream) {
+let streamToBuffer = (function(readStream) {
   return streamToBuffers(readStream).then(buffersToBuffer);
 });
-var streamableToBuffer = (function(streamable) {
+let streamableToBuffer = (function(streamable) {
   if (streamable.toBuffer)
     return resolve(streamable.toBuffer());
   return streamableToBuffers(streamable).then(buffersToBuffer).then((function(buffer) {
@@ -48,17 +48,17 @@ var streamableToBuffer = (function(streamable) {
     return buffer;
   }));
 });
-var bufferToStream = (function(buffer) {
+let bufferToStream = (function(buffer) {
   if (!Buffer.isBuffer(buffer))
     buffer = new Buffer(buffer);
-  var $__3 = createChannel(),
+  let $__3 = createChannel(),
       readStream = $__3.readStream,
       writeStream = $__3.writeStream;
   writeStream.write(buffer);
   writeStream.closeWrite(null);
   return readStream;
 });
-var toBufferToStreamable = (function(toBuffer) {
+let toBufferToStreamable = (function(toBuffer) {
   return ({
     reusable: true,
     get contentLength() {
@@ -75,7 +75,7 @@ var toBufferToStreamable = (function(toBuffer) {
     })
   });
 });
-var bufferToStreamable = (function(buffer) {
+let bufferToStreamable = (function(buffer) {
   if (!Buffer.isBuffer(buffer))
     buffer = new Buffer(buffer);
   return toBufferToStreamable((function() {

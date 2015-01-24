@@ -13,7 +13,7 @@ Object.defineProperties(exports, {
 });
 var $__quiver_45_promise__;
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
-var emptyReadStream = (function() {
+let emptyReadStream = (function() {
   return ({
     read: (function() {
       return resolve({closed: true});
@@ -24,7 +24,7 @@ var emptyReadStream = (function() {
     })
   });
 });
-var emptyWriteStream = (function(closeErr) {
+let emptyWriteStream = (function(closeErr) {
   return ({
     prepareWrite: (function() {
       return resolve({closed: true});
@@ -36,7 +36,7 @@ var emptyWriteStream = (function(closeErr) {
     })
   });
 });
-var emptyStreamable = (function(closeErr) {
+let emptyStreamable = (function(closeErr) {
   return ({
     reusable: true,
     contentLength: 0,

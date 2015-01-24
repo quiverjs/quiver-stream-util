@@ -20,9 +20,9 @@ var $__0 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_pro
     resolve = $__0.resolve,
     promisify = $__0.promisify;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
-var streamToBuffers = (function(readStream) {
-  var buffers = [];
-  var doPipe = (function(callback) {
+let streamToBuffers = (function(readStream) {
+  let buffers = [];
+  let doPipe = (function(callback) {
     return readStream.read().then((function($__2) {
       var $__3 = $__2,
           closed = $__3.closed,
@@ -35,7 +35,7 @@ var streamToBuffers = (function(readStream) {
   });
   return promisify(doPipe)();
 });
-var streamableToBuffers = (function(streamable) {
+let streamableToBuffers = (function(streamable) {
   if (streamable.toBuffers)
     return resolve(streamable.toBuffers());
   return streamable.toStream().then((function(readStream) {
@@ -50,8 +50,8 @@ var streamableToBuffers = (function(streamable) {
     }));
   }));
 });
-var buffersToStream = (function(buffers) {
-  var $__2 = createChannel(),
+let buffersToStream = (function(buffers) {
+  let $__2 = createChannel(),
       readStream = $__2.readStream,
       writeStream = $__2.writeStream;
   buffers.forEach((function(buffer) {
@@ -60,7 +60,7 @@ var buffersToStream = (function(buffers) {
   writeStream.closeWrite();
   return readStream;
 });
-var buffersToStreamable = (function(buffers) {
+let buffersToStreamable = (function(buffers) {
   return ({
     reusable: true,
     toBuffers: (function() {

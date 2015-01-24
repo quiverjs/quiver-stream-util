@@ -1,9 +1,9 @@
 "use strict";
-var $__traceur_64_0_46_0_46_7__,
+var $__traceur_64_0_46_0_46_8__,
     $__chai__,
     $___46__46__47_lib_47_stream_45_util__,
     $__quiver_45_promise__;
-($__traceur_64_0_46_0_46_7__ = require("traceur"), $__traceur_64_0_46_0_46_7__ && $__traceur_64_0_46_0_46_7__.__esModule && $__traceur_64_0_46_0_46_7__ || {default: $__traceur_64_0_46_0_46_7__});
+($__traceur_64_0_46_0_46_8__ = require("traceur"), $__traceur_64_0_46_0_46_8__ && $__traceur_64_0_46_0_46_8__.__esModule && $__traceur_64_0_46_0_46_8__ || {default: $__traceur_64_0_46_0_46_8__});
 var chai = ($__chai__ = require("chai"), $__chai__ && $__chai__.__esModule && $__chai__ || {default: $__chai__}).default;
 var $__1 = ($___46__46__47_lib_47_stream_45_util__ = require("../lib/stream-util"), $___46__46__47_lib_47_stream_45_util__ && $___46__46__47_lib_47_stream_45_util__.__esModule && $___46__46__47_lib_47_stream_45_util__ || {default: $___46__46__47_lib_47_stream_45_util__}),
     streamableToText = $__1.streamableToText,
@@ -13,10 +13,10 @@ var $__1 = ($___46__46__47_lib_47_stream_45_util__ = require("../lib/stream-util
 var $__2 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
     promiseChain = $__2.promiseChain,
     resolve = $__2.resolve;
-var should = chai.should();
-var testBuffers = ['foo', 'bar', 'baz'];
+let should = chai.should();
+let testBuffers = ['foo', 'bar', 'baz'];
 describe('basic buffer test', (function() {
-  var streamable = buffersToStreamable(testBuffers);
+  let streamable = buffersToStreamable(testBuffers);
   it('should convert buffers to stream', (function() {
     return streamable.toStream().then((function(readStream) {
       return readStream.read().then((function($__3) {

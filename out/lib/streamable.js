@@ -25,15 +25,15 @@ var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error_
 var resolve = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).resolve;
 var createChannel = ($__quiver_45_stream_45_channel__ = require("quiver-stream-channel"), $__quiver_45_stream_45_channel__ && $__quiver_45_stream_45_channel__.__esModule && $__quiver_45_stream_45_channel__ || {default: $__quiver_45_stream_45_channel__}).createChannel;
 var buffersToStream = ($__buffers__ = require("./buffers"), $__buffers__ && $__buffers__.__esModule && $__buffers__ || {default: $__buffers__}).buffersToStream;
-var closeStreamable = (function(streamable) {
+let closeStreamable = (function(streamable) {
   if (streamable.reusable)
     return resolve();
   return streamable.toStream().then((function(readStream) {
     return readStream.closeRead();
   }));
 });
-var streamToStreamable = (function(readStream) {
-  var opened = false;
+let streamToStreamable = (function(readStream) {
+  let opened = false;
   return {
     reusable: false,
     toStream: (function() {
@@ -44,12 +44,12 @@ var streamToStreamable = (function(readStream) {
     })
   };
 });
-var reuseStream = (function(readStream) {
-  var streamable = {reusable: true};
-  var buffers = [];
-  var pendingWrites = [];
+let reuseStream = (function(readStream) {
+  let streamable = {reusable: true};
+  let buffers = [];
+  let pendingWrites = [];
   streamable.toStream = (function() {
-    var $__4 = createChannel(),
+    let $__4 = createChannel(),
         readStream = $__4.readStream,
         writeStream = $__4.writeStream;
     buffers.forEach((function(buffer) {
@@ -58,7 +58,7 @@ var reuseStream = (function(readStream) {
     pendingWrites.push(writeStream);
     return resolve(readStream);
   });
-  var doPipe = (function() {
+  let doPipe = (function() {
     readStream.read().then((function($__4) {
       var $__5 = $__4,
           closed = $__5.closed,
@@ -67,7 +67,7 @@ var reuseStream = (function(readStream) {
         pendingWrites.forEach((function(writeStream) {
           return writeStream.closeWrite();
         }));
-        var allBuffers = buffers;
+        let allBuffers = buffers;
         streamable.toStream = (function() {
           return resolve(buffersToStream(allBuffers));
         });
@@ -90,17 +90,17 @@ var reuseStream = (function(readStream) {
   doPipe();
   return streamable;
 });
-var reuseStreamable = (function(streamable) {
+let reuseStreamable = (function(streamable) {
   if (streamable.reusable)
     return resolve(streamable);
   return streamable.toStream().then(reuseStream);
 });
-var unreuseStreamable = (function(streamable) {
+let unreuseStreamable = (function(streamable) {
   if (!streamable.reusable)
     return streamable;
-  var oldToStream = streamable.toStream;
+  let oldToStream = streamable.toStream;
   streamable.reusable = false;
-  var opened = false;
+  let opened = false;
   streamable.toStream = (function() {
     if (opened)
       return rreject(error(500, 'streamable can only be opened once'));

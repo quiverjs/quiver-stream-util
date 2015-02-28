@@ -9,8 +9,8 @@ let {
   readFileSync, createReadStream, createWriteStream
 } = fs
 
-let sampleFile = 'test/sample.txt'
-let tempWrite = 'test/temp.txt'
+let sampleFile = 'fixture/sample.txt'
+let tempWrite = 'fixture/temp.txt'
 let expectedContent = readFileSync(sampleFile).toString()
 
 let chunkString = (content, count) => {

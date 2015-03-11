@@ -1,7 +1,7 @@
 import { resolve, reject } from 'quiver-promise'
 
-export let pipeStream = (readStream, writeStream) => {
-  let doPipe = () => 
+export const pipeStream = (readStream, writeStream) => {
+  const doPipe = () => 
     writeStream.prepareWrite().then(({closed}) => {
       if(closed) {
         readStream.closeRead()

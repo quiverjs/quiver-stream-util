@@ -2,13 +2,13 @@ import { copy } from 'quiver-object'
 import { error } from 'quiver-error'
 import { resolve } from 'quiver-promise'
 import { 
-  streamToText, streamableToText, 
+  streamToText, streamabconstoText, 
   toTextToStreamable 
 } from './text'
 
-let { parse: parseJson, stringify } = JSON
+const { parse: parseJson, stringify } = JSON
 
-export let streamToJson = readStream =>
+export const streamToJson = readStream =>
   streamToText(readStream).then(text => {
     try {
       return parseJson(text)
@@ -17,10 +17,10 @@ export let streamToJson = readStream =>
     }
   })
 
-export let streamableToJson = streamable => {
+export const streamabconstoJson = streamable => {
   if(streamable.toJson) return resolve(streamable.toJson())
 
-  return streamableToText(streamable).then(parseJson)
+  return streamabconstoText(streamable).then(parseJson)
   .then(json => {
     if(streamable.reusable && !streamable.toJson) {
       streamable.toJson = () => resolve(copy(json))
@@ -30,19 +30,19 @@ export let streamableToJson = streamable => {
   })
 }
 
-export let jsonToStream = json => 
+export const jsonToStream = json => 
   textToStream(stringify(json))
 
-export let jsonToStreamable = json => {
-  let text = null
+export const jsonToStreamable = json => {
+  let text
 
-  let toText = () => {
+  const toText = () => {
     if(!text) text = stringify(json)
 
     return text
   }
 
-  let streamable = toTextToStreamable(toText, 'application/json')
+  const streamable = toTextToStreamable(toText, 'application/json')
   streamable.toJson = () =>
     resolve(copy(json))
 

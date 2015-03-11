@@ -1,32 +1,31 @@
-import 'traceur'
 import { createChannel } from 'quiver-stream-channel'
 import {
   streamToText
 } from '../lib/stream-util'
 
-let chai = require('chai')
-let should = chai.should()
+const chai = require('chai')
+const should = chai.should()
 
-let testString = '世界你好'
-let testBuffer = new Buffer(testString)
-let buffer1 = testBuffer.slice(0, 5)
-let buffer2 = testBuffer.slice(5, 10)
-let buffer3 = testBuffer.slice(10, 12)
+const testString = '世界你好'
+const testBuffer = new Buffer(testString)
+const buffer1 = testBuffer.slice(0, 5)
+const buffer2 = testBuffer.slice(5, 10)
+const buffer3 = testBuffer.slice(10, 12)
 
 describe('unicode text test', function() {
   it('buffer to string then concat should not equal original', () => {
-    let result = '' + buffer1 + '' + buffer2 + '' + buffer3
+    const result = '' + buffer1 + '' + buffer2 + '' + buffer3
     result.should.not.equal(testString) 
   })
 
   it('buffer concat then to string should equal original', () => {
-    let buffer = Buffer.concat([buffer1, buffer2, buffer3])
-    let result = ''+buffer
+    const buffer = Buffer.concat([buffer1, buffer2, buffer3])
+    const result = ''+buffer
     result.should.equal(testString)
   })
 
   it('stream to text should equal original', () => {
-    let { readStream, writeStream } = createChannel()
+    const { readStream, writeStream } = createChannel()
 
     writeStream.write(buffer1)
     writeStream.write(buffer2)

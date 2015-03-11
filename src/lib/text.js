@@ -1,19 +1,19 @@
 import { resolve } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
 import { 
-  streamToBuffer, streamableToBuffer, 
+  streamToBuffer, streamabconstoBuffer, 
   toBufferToStreamable 
 } from './buffer'
 
-export let streamToText = readStream =>
+export const streamToText = readStream =>
   streamToBuffer(readStream).then(buffer =>
     buffer.toString())
 
-export let streamableToText = streamable => {
+export const streamabconstoText = streamable => {
   if(streamable.toText) return resolve(streamable.toText())
 
-  return streamableToBuffer(streamable).then(buffer => {
-    let text = buffer.toString()
+  return streamabconstoBuffer(streamable).then(buffer => {
+    const text = buffer.toString()
     
     if(streamable.reusable && !streamable.toText) {
       streamable.toText = () => resolve(text)
@@ -23,8 +23,8 @@ export let streamableToText = streamable => {
   })
 }
 
-export let textToStream = text => {
-  let { readStream, writeStream } = createChannel()
+export const textToStream = text => {
+  const { readStream, writeStream } = createChannel()
 
   writeStream.write(new Buffer(text))
   writeStream.closeWrite()
@@ -32,16 +32,16 @@ export let textToStream = text => {
   return readStream
 }
 
-export let toTextToStreamable = (toText, contentType='text/plain') => {
+export const toTextToStreamable = (toText, contentType='text/plain') => {
   let buffer = null
 
-  let toBuffer = () => {
+  const toBuffer = () => {
     if(!buffer) buffer = new Buffer(toText())
 
     return buffer
   }
 
-  let streamable = toBufferToStreamable(toBuffer)
+  const streamable = toBufferToStreamable(toBuffer)
 
   streamable.toText = () => resolve(toText())
   streamable.contentType = contentType
@@ -49,5 +49,5 @@ export let toTextToStreamable = (toText, contentType='text/plain') => {
   return streamable
 }
 
-export let textToStreamable = (text, contentType='text/plain') =>
+export const textToStreamable = (text, contentType='text/plain') =>
   toTextToStreamable(() => text, contentType)

@@ -1,5 +1,3 @@
-import 'traceur'
-
 import { async } from 'quiver-promise'
 import {
   streamToText,
@@ -11,20 +9,20 @@ import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 
 chai.use(chaiAsPromised)
-let should = chai.should()
+const should = chai.should()
 
 describe('stream pushback test', () => {
   it('should emit pushed back buffers first', async(function*() {
-    let testBuffers = ['foo ', 'bar']
-    let pushbackBuffers = ['before1 ', 'before2 ']
+    const testBuffers = ['foo ', 'bar']
+    const pushbackBuffers = ['before1 ', 'before2 ']
 
     let readStream = buffersToStream(testBuffers)
     readStream = pushbackStream(readStream, pushbackBuffers)
 
-    var { data } = yield readStream.peek()
+    let { data } = yield readStream.peek()
     data.should.equal('before1 ')
 
-    var { data } = yield readStream.peek()
+    ;({ data }) = yield readStream.peek()
     data.should.equal('before1 ')
 
     yield streamToText(readStream).should.eventually.equal(
@@ -32,7 +30,7 @@ describe('stream pushback test', () => {
   }))
 
   it('nested stream pushback test', async(function*() {
-    let testBuffers = ['six ', 'seven']
+    const testBuffers = ['six ', 'seven']
     let readStream = buffersToStream(testBuffers)
 
     readStream = pushbackStream(readStream, ['four ', 'five '])

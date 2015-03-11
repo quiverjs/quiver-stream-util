@@ -1,23 +1,23 @@
 import { resolve } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
 import { 
-  streamToBuffers, streamableToBuffers 
+  streamToBuffers, streamabconstoBuffers 
 } from './buffers'
 
-let nodeBuffers = buffers =>
+const nodeBuffers = buffers =>
   buffers.map(buffer =>
     (buffer instanceof Buffer) ? buffer : new Buffer(buffer))
 
-let buffersToBuffer = buffers =>
+const buffersToBuffer = buffers =>
   Buffer.concat(nodeBuffers(buffers))
 
-export let streamToBuffer = readStream =>
+export const streamToBuffer = readStream =>
   streamToBuffers(readStream).then(buffersToBuffer)
 
-export let streamableToBuffer = streamable => {
+export const streamabconstoBuffer = streamable => {
   if(streamable.toBuffer) return resolve(streamable.toBuffer())
 
-  return streamableToBuffers(streamable).then(buffersToBuffer)
+  return streamabconstoBuffers(streamable).then(buffersToBuffer)
     .then(buffer => {
       if(streamable.reusable && !streamable.toBuffer) {
         streamable.toBuffer = () => resolve(buffer)
@@ -27,11 +27,11 @@ export let streamableToBuffer = streamable => {
     })
 }
 
-export let bufferToStream = buffer => {
+export const bufferToStream = buffer => {
   if(!Buffer.isBuffer(buffer)) 
     buffer = new Buffer(buffer)
   
-  let { readStream, writeStream } = createChannel()
+  const { readStream, writeStream } = createChannel()
 
   writeStream.write(buffer)
   writeStream.closeWrite(null)
@@ -39,7 +39,7 @@ export let bufferToStream = buffer => {
   return readStream
 }
 
-export let toBufferToStreamable = (toBuffer) => ({
+export const toBufferToStreamable = (toBuffer) => ({
   reusable: true,
   get contentLength() {
     return toBuffer().length
@@ -49,7 +49,7 @@ export let toBufferToStreamable = (toBuffer) => ({
   toStream: () => resolve(bufferToStream(toBuffer()))
 })
 
-export let bufferToStreamable = buffer => {
+export const bufferToStreamable = buffer => {
   if(!Buffer.isBuffer(buffer)) 
     buffer = new Buffer(buffer)
 

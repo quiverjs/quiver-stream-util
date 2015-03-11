@@ -1,12 +1,11 @@
-import 'traceur'
 import chai from 'chai'
 import { emptyReadStream, emptyWriteStream } from '../lib/empty'
 
-let should = chai.should()
+const should = chai.should()
 
 describe('empty stream test', () => {
   it('test empty read stream', () => {
-    let readStream = emptyReadStream()
+    const readStream = emptyReadStream()
 
     should.exist(readStream.isClosed())
     
@@ -17,7 +16,7 @@ describe('empty stream test', () => {
   })
 
   it('test empty write stream', () => {
-    let writeStream = emptyWriteStream()
+    const writeStream = emptyWriteStream()
     
     writeStream.write('ignored data')
     should.exist(writeStream.isClosed())

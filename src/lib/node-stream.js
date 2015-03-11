@@ -2,12 +2,12 @@ import { error } from 'quiver-error'
 import { resolve, reject } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
 
-let noop = () => { }
+const noop = () => { }
 
-export let nodeReadToStreamable = nodeRead => {
+export const nodeReadToStreamable = nodeRead => {
   let opened = false
 
-  let toStream = () => {
+  const toStream = () => {
     if(opened) return reject(error(500, 
       'streamable can only be opened once'))
 
@@ -15,7 +15,7 @@ export let nodeReadToStreamable = nodeRead => {
     return resolve(nodeToQuiverReadStream(nodeRead))
   }
 
-  let toNodeStream = () => {
+  const toNodeStream = () => {
     if(opened) return reject(error(500, 
       'streamable can only be opened once'))
 
@@ -30,8 +30,8 @@ export let nodeReadToStreamable = nodeRead => {
   }
 }
 
-export let nodeToQuiverReadStream = nodeRead => {
-  let { readStream, writeStream } = createChannel()
+export const nodeToQuiverReadStream = nodeRead => {
+  const { readStream, writeStream } = createChannel()
 
   let ended = false
 
@@ -49,16 +49,16 @@ export let nodeToQuiverReadStream = nodeRead => {
     writeStream.closeWrite(err)
   })
 
-  let doRead = (callback) => {
+  const doRead = (callback) => {
     if(ended) return
 
-    let data = nodeRead.read()
+    const data = nodeRead.read()
     if(data) return callback(data)
 
     nodeRead.once('readable', () => doRead(callback))
   }
 
-  let doPipe = () =>
+  const doPipe = () =>
     writeStream.prepareWrite().then(({closed}) => {
       // force the node read stream into flowing mode 
       // because there is no way to cancel a node read stream?!
@@ -75,17 +75,17 @@ export let nodeToQuiverReadStream = nodeRead => {
   return readStream
 }
 
-export let nodeToQuiverWriteStream = nodeWrite => {
-  let { readStream, writeStream } = createChannel()
+export const nodeToQuiverWriteStream = nodeWrite => {
+  const { readStream, writeStream } = createChannel()
 
   nodeWrite.on('error', err =>
     readStream.closeRead(err))
 
-  let doPipe = () =>
+  const doPipe = () =>
     readStream.read().then(({closed, data}) => {
       if(closed) return nodeWrite.end()
 
-      let ready = nodeWrite.write(data)
+      const ready = nodeWrite.write(data)
       if(ready) return doPipe()
       
       nodeWrite.once('drain', doPipe)

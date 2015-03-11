@@ -1,28 +1,27 @@
-import 'traceur'
 import { 
   streamToJson, buffersToStream, textToStreamable,
-  jsonToStreamable, streamableToJson
+  jsonToStreamable, streamabconstoJson
 } from '../lib/stream-util'
 
 import { async } from 'quiver-promise'
 
-let chai = require('chai')
-let should = chai.should()
+const chai = require('chai')
+const should = chai.should()
 
-let originalJson = {
+const originalJson = {
   "foo": "testing 123",
   "bar": [
     "a", "b"
   ]
 }
 
-let testJson = function(json) {
+const testJson = function(json) {
   json.foo.should.equal('testing 123')
   json.bar[0].should.equal('a')
   json.bar[1].should.equal('b')
 }
 
-let testBuffers = [
+const testBuffers = [
   '{ "fo', 'o": "', 'testing ', '123", ', '"bar', '": [ ',
   '"a", "b', '"] }' 
 ]
@@ -38,7 +37,7 @@ describe('basic json test', function() {
     streamToJson(buffersToStream(testBuffers)).then(testJson))
 
   it('should convert json to streamable', async(function*() {
-    let streamable = jsonToStreamable(originalJson)
+    const streamable = jsonToStreamable(originalJson)
 
     should.exist(streamable.toJson)
     should.exist(streamable.toText)
@@ -58,13 +57,13 @@ describe('basic json test', function() {
   }))
 
   it('should convert text to streamble', async(function*() {
-    let jsonText = JSON.stringify(originalJson)
-    let streamable = textToStreamable(jsonText)
+    const jsonText = JSON.stringify(originalJson)
+    const streamable = textToStreamable(jsonText)
 
     should.not.exist(streamable.toJson)
     should.exist(streamable.toText)
 
-    yield streamableToJson(streamable).then(testJson)
+    yield streamabconstoJson(streamable).then(testJson)
 
     should.exist(streamable.toJson)
   }))

@@ -1,14 +1,14 @@
 import { resolve } from 'quiver-promise'
 
-export let pushbackStream = (readStream, buffers=[]) => {
+export const pushbackStream = (readStream, buffers=[]) => {
   if(readStream.pushback) {
     readStream.pushback(buffers)
     return readStream
   }
 
-  let newReadStream = Object.create(readStream)
+  const newReadStream = Object.create(readStream)
 
-  let doRead = () => {
+  const doRead = () => {
     if(buffers.length == 0) {
       return readStream.read()
     } else {

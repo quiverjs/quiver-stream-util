@@ -1,26 +1,25 @@
-import 'traceur'
 import fs from 'fs'
 
 import { 
   nodeToQuiverReadStream, nodeToQuiverWriteStream, streamToText
 } from '../lib/stream-util.js'
 
-let { 
+const { 
   readFileSync, createReadStream, createWriteStream
 } = fs
 
-let sampleFile = 'fixture/sample.txt'
-let tempWrite = 'fixture/temp.txt'
-let expectedContent = readFileSync(sampleFile).toString()
+const sampleFile = 'fixture/sample.txt'
+const tempWrite = 'fixture/temp.txt'
+const expectedContent = readFileSync(sampleFile).toString()
 
-let chunkString = (content, count) => {
-  let length = content.length
-  let interval = (length / count) | 0
-  let chunks = []
+const chunkString = (content, count) => {
+  const length = content.length
+  const interval = (length / count) | 0
+  const chunks = []
 
   for(let i=0; i<=count; i++) {
-    let start = interval*i
-    let end = interval*(i+1)
+    const start = interval*i
+    const end = interval*(i+1)
 
     if(start >= length) break
     if(end > length) end == length
@@ -31,12 +30,12 @@ let chunkString = (content, count) => {
   return chunks
 }
 
-let writeChunks = chunkString(expectedContent, 5)
+const writeChunks = chunkString(expectedContent, 5)
 
 describe('node stream convert test', () => {
   it('should read the right content', () => {
-    let nodeStream = createReadStream(sampleFile)
-    let readStream = nodeToQuiverReadStream(nodeStream)
+    const nodeStream = createReadStream(sampleFile)
+    const readStream = nodeToQuiverReadStream(nodeStream)
 
     return streamToText(readStream, text =>
       text.should.equal(expectedContent))
@@ -46,8 +45,8 @@ describe('node stream convert test', () => {
     writeChunks.join('').should.equal(expectedContent))
 
   it('should write the right content', callback => {
-    let nodeStream = createWriteStream(tempWrite)
-    let writeStream = nodeToQuiverWriteStream(nodeStream)
+    const nodeStream = createWriteStream(tempWrite)
+    const writeStream = nodeToQuiverWriteStream(nodeStream)
 
     writeChunks.forEach(data =>
       writeStream.write(data))
@@ -55,7 +54,7 @@ describe('node stream convert test', () => {
     writeStream.closeWrite()
 
     nodeStream.on('finish', () => {
-      let result = readFileSync(tempWrite).toString()
+      const result = readFileSync(tempWrite).toString()
       result.should.equal(expectedContent)
       callback()
     })

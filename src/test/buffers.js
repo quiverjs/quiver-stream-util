@@ -1,18 +1,17 @@
-import 'traceur'
 import chai from 'chai'
 
 import { 
-  streamableToText, buffersToStreamable, reuseStream, streamToBuffers
+  streamabconstoText, buffersToStreamable, reuseStream, streamToBuffers
 } from '../lib/stream-util'
 
 import { promiseChain, resolve } from 'quiver-promise'
 
-let should = chai.should()
+const should = chai.should()
 
-let testBuffers = [ 'foo', 'bar', 'baz' ]
+const testBuffers = [ 'foo', 'bar', 'baz' ]
 
 describe('basic buffer test', () => {
-  let streamable = buffersToStreamable(testBuffers)
+  const streamable = buffersToStreamable(testBuffers)
 
   it('should convert buffers to stream', () =>
     streamable.toStream().then(readStream => 
@@ -33,7 +32,7 @@ describe('basic buffer test', () => {
       })))
 
   it('should be convertible to string', () =>
-    streamableToText(streamable).then(text =>
+    streamabconstoText(streamable).then(text =>
       text.should.equal('foobarbaz')))
 
   it('convert buffers stream into reusable streamable', () =>

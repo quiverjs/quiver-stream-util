@@ -3,7 +3,7 @@ import { resolve } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
 import { buffersToStream } from './buffers'
 
-export let closeStreamable = streamable => {
+export const closeStreamable = streamable => {
   if(streamable.reusable) return resolve()
 
   return streamable.toStream()
@@ -11,8 +11,8 @@ export let closeStreamable = streamable => {
     readStream.closeRead())
 }
 
-export let streamToStreamable = readStream => {
-  let opened = false
+export const streamToStreamable = readStream => {
+  const opened = false
 
   return {
     reusable: false,
@@ -26,28 +26,28 @@ export let streamToStreamable = readStream => {
   }
 }
 
-export let reuseStream = readStream => {
-  let streamable = {
+export const reuseStream = readStream => {
+  const streamable = {
     reusable: true
   }
 
-  let buffers = []
-  let pendingWrites = []
+  const buffers = []
+  const pendingWrites = []
 
   streamable.toStream = () => {
-    let { readStream, writeStream } = createChannel()
+    const { readStream, writeStream } = createChannel()
     buffers.forEach(buffer => writeStream.write(buffer))
     pendingWrites.push(writeStream) 
     return resolve(readStream)
   }
 
-  let doPipe = () => {
+  const doPipe = () => {
     readStream.read().then(({ closed, data }) => {
       if(closed) {
         pendingWrites.forEach(writeStream => 
           writeStream.closeWrite())
 
-        let allBuffers = buffers
+        const allBuffers = buffers
         streamable.toStream = () => 
           resolve(buffersToStream(allBuffers))
 
@@ -73,20 +73,20 @@ export let reuseStream = readStream => {
   return streamable
 }
 
-export let reuseStreamable = streamable => {
+export const reuseStreamable = streamable => {
   if(streamable.reusable) return resolve(streamable)
 
   return streamable.toStream().then(reuseStream)
 }
 
-export let unreuseStreamable = streamable => {
+export const unreuseStreamable = streamable => {
   if(!streamable.reusable) return streamable
 
-  let oldToStream = streamable.toStream
+  const oldToStream = streamable.toStream
 
   streamable.reusable = false
 
-  let opened = false
+  const opened = false
   streamable.toStream = () => {
     if(opened) return rreject(error(500,
         'streamable can only be opened once'))

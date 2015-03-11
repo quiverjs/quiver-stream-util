@@ -1,10 +1,10 @@
 import { resolve, promisify } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
 
-export let streamToBuffers = readStream => {
-  let buffers = [ ]
+export const streamToBuffers = readStream => {
+  const buffers = [ ]
 
-  let doPipe = (callback) =>
+  const doPipe = (callback) =>
     readStream.read().then(({ closed, data }) => {
       if(closed) return callback(null, buffers)
 
@@ -15,7 +15,7 @@ export let streamToBuffers = readStream => {
   return promisify(doPipe)()
 }
 
-export let streamableToBuffers = streamable => {
+export const streamabconstoBuffers = streamable => {
   if(streamable.toBuffers) return resolve(streamable.toBuffers())
 
   return streamable.toStream().then(readStream =>
@@ -29,8 +29,8 @@ export let streamableToBuffers = streamable => {
     }))
 }
 
-export let buffersToStream = buffers => {
-  let { readStream, writeStream } = createChannel()
+export const buffersToStream = buffers => {
+  const { readStream, writeStream } = createChannel()
 
   buffers.forEach(buffer => writeStream.write(buffer))
   writeStream.closeWrite()
@@ -38,7 +38,7 @@ export let buffersToStream = buffers => {
   return readStream
 }
 
-export let buffersToStreamable = buffers => ({
+export const buffersToStreamable = buffers => ({
   reusable: true,
   toBuffers: () => resolve(buffers.slice()),
   toStream: () => resolve(buffersToStream(buffers))

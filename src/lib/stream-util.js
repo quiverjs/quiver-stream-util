@@ -1,17 +1,17 @@
 export { 
-  streamToBuffers, streamabconstoBuffers, buffersToStream, buffersToStreamable
+  streamToBuffers, streamableToBuffers, buffersToStream, buffersToStreamable
 } from './buffers'
 
 export {
-  streamToBuffer, streamabconstoBuffer, bufferToStream, bufferToStreamable
+  streamToBuffer, streamableToBuffer, bufferToStream, bufferToStreamable
 } from './buffer'
 
 export {
-  streamToText, streamabconstoText, textToStream, textToStreamable
+  streamToText, streamableToText, textToStream, textToStreamable
 } from './text'
 
 export {
-  streamToJson, streamabconstoJson, jsonToStream, jsonToStreamable
+  streamToJson, streamableToJson, jsonToStream, jsonToStreamable
 } from './json'
 
 export {

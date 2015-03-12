@@ -1,6 +1,6 @@
 import { 
   streamToJson, buffersToStream, textToStreamable,
-  jsonToStreamable, streamabconstoJson
+  jsonToStreamable, streamableToJson
 } from '../lib/stream-util'
 
 import { async } from 'quiver-promise'
@@ -63,7 +63,7 @@ describe('basic json test', function() {
     should.not.exist(streamable.toJson)
     should.exist(streamable.toText)
 
-    yield streamabconstoJson(streamable).then(testJson)
+    yield streamableToJson(streamable).then(testJson)
 
     should.exist(streamable.toJson)
   }))

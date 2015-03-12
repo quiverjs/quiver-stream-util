@@ -2,7 +2,7 @@ import { copy } from 'quiver-object'
 import { error } from 'quiver-error'
 import { resolve } from 'quiver-promise'
 import { 
-  streamToText, streamabconstoText, 
+  streamToText, streamableToText, 
   toTextToStreamable 
 } from './text'
 
@@ -17,10 +17,10 @@ export const streamToJson = readStream =>
     }
   })
 
-export const streamabconstoJson = streamable => {
+export const streamableToJson = streamable => {
   if(streamable.toJson) return resolve(streamable.toJson())
 
-  return streamabconstoText(streamable).then(parseJson)
+  return streamableToText(streamable).then(parseJson)
   .then(json => {
     if(streamable.reusable && !streamable.toJson) {
       streamable.toJson = () => resolve(copy(json))

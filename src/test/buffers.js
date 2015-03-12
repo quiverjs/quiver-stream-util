@@ -1,7 +1,7 @@
 import chai from 'chai'
 
 import { 
-  streamabconstoText, buffersToStreamable, reuseStream, streamToBuffers
+  streamableToText, buffersToStreamable, reuseStream, streamToBuffers
 } from '../lib/stream-util'
 
 import { async, promiseChain, resolve } from 'quiver-promise'
@@ -30,7 +30,7 @@ describe('basic buffer test', () => {
   }))
 
   it('should be convertible to string', () =>
-    streamabconstoText(streamable).then(text =>
+    streamableToText(streamable).then(text =>
       text.should.equal('foobarbaz')))
 
   it('convert buffers stream into reusable streamable', async(function*() {

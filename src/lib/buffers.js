@@ -15,7 +15,7 @@ export const streamToBuffers = readStream => {
   return promisify(doPipe)()
 }
 
-export const streamabconstoBuffers = streamable => {
+export const streamableToBuffers = streamable => {
   if(streamable.toBuffers) return resolve(streamable.toBuffers())
 
   return streamable.toStream().then(readStream =>

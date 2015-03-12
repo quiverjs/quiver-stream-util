@@ -12,7 +12,7 @@ export const closeStreamable = streamable => {
 }
 
 export const streamToStreamable = readStream => {
-  const opened = false
+  let opened = false
 
   return {
     reusable: false,
@@ -86,7 +86,7 @@ export const unreuseStreamable = streamable => {
 
   streamable.reusable = false
 
-  const opened = false
+  let opened = false
   streamable.toStream = () => {
     if(opened) return rreject(error(500,
         'streamable can only be opened once'))

@@ -1,7 +1,7 @@
 import { resolve } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
 import { 
-  streamToBuffer, streamabconstoBuffer, 
+  streamToBuffer, streamableToBuffer, 
   toBufferToStreamable 
 } from './buffer'
 
@@ -9,10 +9,10 @@ export const streamToText = readStream =>
   streamToBuffer(readStream).then(buffer =>
     buffer.toString())
 
-export const streamabconstoText = streamable => {
+export const streamableToText = streamable => {
   if(streamable.toText) return resolve(streamable.toText())
 
-  return streamabconstoBuffer(streamable).then(buffer => {
+  return streamableToBuffer(streamable).then(buffer => {
     const text = buffer.toString()
     
     if(streamable.reusable && !streamable.toText) {

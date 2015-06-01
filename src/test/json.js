@@ -3,8 +3,6 @@ import {
   jsonToStreamable, streamableToJson
 } from '../lib/stream-util'
 
-import { async } from 'quiver-promise'
-
 const chai = require('chai')
 const should = chai.should()
 
@@ -36,7 +34,7 @@ describe('basic json test', function() {
   it('should parse json correctly', () =>
     streamToJson(buffersToStream(testBuffers)).then(testJson))
 
-  it('should convert json to streamable', async(function*() {
+  it('should convert json to streamable', async function() {
     const streamable = jsonToStreamable(originalJson)
 
     should.exist(streamable.toJson)
@@ -45,26 +43,26 @@ describe('basic json test', function() {
 
     streamable.contentType.should.equal('application/json')
 
-    yield streamable.toJson()
+    await streamable.toJson()
       .then(testJson)
 
-    yield streamable.toText()
+    await streamable.toText()
       .then(JSON.parse).then(testJson)
 
-    yield streamable.toStream()
+    await streamable.toStream()
       .then(streamToJson).then(testJson)
 
-  }))
+  })
 
-  it('should convert text to streamble', async(function*() {
+  it('should convert text to streamble', async function() {
     const jsonText = JSON.stringify(originalJson)
     const streamable = textToStreamable(jsonText)
 
     should.not.exist(streamable.toJson)
     should.exist(streamable.toText)
 
-    yield streamableToJson(streamable).then(testJson)
+    await streamableToJson(streamable).then(testJson)
 
     should.exist(streamable.toJson)
-  }))
+  })
 })

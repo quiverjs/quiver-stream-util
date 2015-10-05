@@ -1,22 +1,22 @@
-import { resolve } from 'quiver-promise'
+import { resolve } from 'quiver-util/promise'
 
 export const emptyReadStream = () => ({
-  read: () => resolve({closed: true}),
+  read: () => resolve({ closed: true }),
   closeRead: err => { },
   isClosed: () => ({})
 })
 
-export const emptyWriteStream = closeErr => ({
-  prepareWrite: () => resolve({closed: true}),
+export const emptyWriteStream = () => ({
+  prepareWrite: () => resolve({ closed: true }),
   write: data => { },
   closeWrite: err => { },
   isClosed: () => ({})
 })
 
-export const emptyStreamable = closeErr => ({
+export const emptyStreamable = () => ({
   reusable: true,
   contentLength: 0,
-  toStream: () => resolve(emptyReadStream(closeErr)),
+  toStream: () => resolve(emptyReadStream()),
   toText: () => resolve(''),
   toBuffer: () => resolve(new Buffer(0))
 })

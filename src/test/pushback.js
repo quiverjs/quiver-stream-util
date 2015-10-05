@@ -1,17 +1,14 @@
+import test from 'tape'
+import { asyncTest } from 'quiver-util/tape'
+
 import {
   streamToText,
   buffersToStream,
   pushbackStream
-} from '../lib/stream-util'
+} from '../lib'
 
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
-
-chai.use(chaiAsPromised)
-const should = chai.should()
-
-describe('stream pushback test', () => {
-  it('should emit pushed back buffers first', async function() {
+test('stream pushback test', assert => {
+  assert::asyncTest('should emit pushed back buffers first', async function(assert) {
     const testBuffers = ['foo ', 'bar']
     const pushbackBuffers = ['before1 ', 'before2 ']
 
@@ -19,16 +16,18 @@ describe('stream pushback test', () => {
     readStream = pushbackStream(readStream, pushbackBuffers)
 
     let { data } = await readStream.peek()
-    data.should.equal('before1 ')
+    assert.equal(data, 'before1 ')
 
     ;({ data } = await readStream.peek())
-    data.should.equal('before1 ')
+    assert.equal(data, 'before1 ')
 
-    await streamToText(readStream).should.eventually.equal(
-      'before1 before2 foo bar')
+    const text = await streamToText(readStream)
+    assert.equal(text, 'before1 before2 foo bar')
+
+    assert.end()
   })
 
-  it('nested stream pushback test', async function() {
+  assert::asyncTest('nested stream pushback test', async function(assert) {
     const testBuffers = ['six ', 'seven']
     let readStream = buffersToStream(testBuffers)
 
@@ -36,7 +35,9 @@ describe('stream pushback test', () => {
     readStream = pushbackStream(readStream, ['three '])
     readStream = pushbackStream(readStream, ['one ', 'two '])
 
-    await streamToText(readStream).should.eventually.equal(
-      'one two three four five six seven')
+    const text = await streamToText(readStream)
+    assert.equal(text, 'one two three four five six seven')
+
+    assert.end()
   })
 })

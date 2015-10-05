@@ -1,10 +1,8 @@
-import { createChannel } from 'quiver-stream-channel'
-import {
-  streamToText
-} from '../lib/stream-util'
+import test from 'tape'
+import { asyncTest } from 'quiver-util/tape'
 
-const chai = require('chai')
-const should = chai.should()
+import { createChannel } from 'quiver-stream-channel'
+import { streamToText } from '../lib'
 
 const testString = '世界你好'
 const testBuffer = new Buffer(testString)
@@ -12,19 +10,21 @@ const buffer1 = testBuffer.slice(0, 5)
 const buffer2 = testBuffer.slice(5, 10)
 const buffer3 = testBuffer.slice(10, 12)
 
-describe('unicode text test', function() {
-  it('buffer to string then concat should not equal original', () => {
+test('unicode text test', assert => {
+  assert.test('buffer to string then concat should not equal original', assert => {
     const result = '' + buffer1 + '' + buffer2 + '' + buffer3
-    result.should.not.equal(testString) 
+    assert.notEqual(result, testString)
+    assert.end()
   })
 
-  it('buffer concat then to string should equal original', () => {
+  assert.test('buffer concat then to string should equal original', assert => {
     const buffer = Buffer.concat([buffer1, buffer2, buffer3])
     const result = ''+buffer
-    result.should.equal(testString)
+    assert.equal(result, testString)
+    assert.end()
   })
 
-  it('stream to text should equal original', () => {
+  assert::asyncTest('stream to text should equal original', async function(assert) {
     const { readStream, writeStream } = createChannel()
 
     writeStream.write(buffer1)
@@ -32,7 +32,9 @@ describe('unicode text test', function() {
     writeStream.write(buffer3)
     writeStream.closeWrite()
 
-    return streamToText(readStream).then(text => 
-      text.should.equal(testString))
+    const text = await streamToText(readStream)
+    assert.equal(text, testString)
+
+    assert.end()
   })
 })

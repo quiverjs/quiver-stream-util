@@ -1,71 +1,89 @@
-import { error } from 'quiver-error'
-import { resolve } from 'quiver-promise'
 import { createChannel } from 'quiver-stream-channel'
+
+import { streamOpener } from './util'
 import { buffersToStream } from './buffers'
 
-export const closeStreamable = streamable => {
-  if(streamable.reusable) return resolve()
+export const closeStreamable = async function(streamable) {
+  if(streamable.reusable) return
 
-  return streamable.toStream()
-  .then(readStream => 
-    readStream.closeRead())
+  const readStream = await streamable.toStream()
+  return readStream.closeRead()
 }
 
 export const streamToStreamable = readStream => {
-  let opened = false
+  const openStream = streamOpener()
 
   return {
     reusable: false,
-    toStream: () => {
-      if(opened) return reject(error(500,
-        'streamable can only be opened once'))
 
-      opened = true
-      return resolve(readStream)
+    async toStream() {
+      openStream()
+      return readStream
     }
   }
 }
+
+const buffersToToStream = buffers =>
+  async function() {
+    return buffersToStream(buffers)
+  }
 
 export const reuseStream = readStream => {
   const streamable = {
     reusable: true
   }
 
-  const buffers = []
-  const pendingWrites = []
+  let isClosed = false
+  let closedErr = null
 
-  streamable.toStream = () => {
+  const buffers = []
+  let pendingWrites = []
+
+  const toStream = streamable.toStream = async function() {
+    if(closedErr) throw closedErr
+    if(isClosed) return buffersToStream(buffers)
+
     const { readStream, writeStream } = createChannel()
-    buffers.forEach(buffer => writeStream.write(buffer))
-    pendingWrites.push(writeStream) 
-    return resolve(readStream)
+
+    for(let buffer of buffers)
+      writeStream.write(buffer)
+
+    pendingWrites.push(writeStream)
+
+    return readStream
   }
 
-  const doPipe = () => {
-    readStream.read().then(({ closed, data }) => {
-      if(closed) {
-        pendingWrites.forEach(writeStream => 
-          writeStream.closeWrite())
+  const doPipe = async function() {
+    try {
+      while(true) {
+        const { data, closed } = await readStream.read()
+        if(!closed) {
+          buffers.push(data)
+          for(let writeStream of pendingWrites)
+            writeStream.write(data)
 
-        const allBuffers = buffers
-        streamable.toStream = () => 
-          resolve(buffersToStream(allBuffers))
+        } else {
+          isClosed = true
+          for(let writeStream of pendingWrites)
+            writeStream.closeWrite()
 
-      } else {
-        buffers.push(data)
+          if(streamable.toStream === toStream)
+            streamable.toStream = buffersToToStream(buffers)
 
-        pendingWrites.forEach(writeStream =>
-          writeStream.write(data))
+          pendingWrites = []
+          return
+        }
 
-        doPipe()
       }
+    } catch(err) {
+      isClosed = true
+      closedErr = err
 
-    }, err => {
-      pendingWrites.forEach(writeStream => 
-        writeStream.closeWrite(err))
-      
-      streamable.toStream = () => reject(err)
-    })
+      for(let writeStream of pendingWrites) {
+        writeStream.closeWrite(err)
+        streamable.toStream = () => Promise.reject(err)
+      }
+    }
   }
 
   doPipe()
@@ -73,10 +91,11 @@ export const reuseStream = readStream => {
   return streamable
 }
 
-export const reuseStreamable = streamable => {
-  if(streamable.reusable) return resolve(streamable)
+export const reuseStreamable = async function(streamable) {
+  if(streamable.reusable) return streamable
 
-  return streamable.toStream().then(reuseStream)
+  const readStream = await streamable.toStream()
+  return reuseStream(readStream)
 }
 
 export const unreuseStreamable = streamable => {
@@ -86,12 +105,10 @@ export const unreuseStreamable = streamable => {
 
   streamable.reusable = false
 
-  let opened = false
-  streamable.toStream = () => {
-    if(opened) return rreject(error(500,
-        'streamable can only be opened once'))
+  const openStream = streamOpener()
 
-    opened = true
+  streamable.toStream = async function() {
+    openStream()
     return oldToStream()
   }
 

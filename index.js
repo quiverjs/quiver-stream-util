@@ -1,2 +1,2 @@
 'use strict'
-module.exports = require('./out/lib/stream-util.js')
+module.exports = require('./out/lib')

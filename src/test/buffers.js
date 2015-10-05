@@ -1,46 +1,49 @@
-import chai from 'chai'
+import test from 'tape'
+import { asyncTest } from 'quiver-util/tape'
 
-import { 
-  streamableToText, buffersToStreamable, reuseStream, streamToBuffers
-} from '../lib/stream-util'
-
-import { promiseChain, resolve } from 'quiver-promise'
-
-const should = chai.should()
+import {
+  reuseStream, streamToBuffers,
+  streamableToText, buffersToStreamable
+} from '../lib/'
 
 const testBuffers = [ 'foo', 'bar', 'baz' ]
 
-describe('basic buffer test', () => {
+test('basic buffer test', assert => {
   const streamable = buffersToStreamable(testBuffers)
 
-  it('should convert buffers to stream', async function() {
+  assert::asyncTest('should convert buffers to stream', async function(assert) {
     const readStream = await streamable.toStream()
 
     let {closed, data} = await readStream.read()
-    data.should.equal(testBuffers[0])
+    assert.equal(data, testBuffers[0])
 
     ;({closed, data} = await readStream.read())
-    data.should.equal(testBuffers[1])
+    assert.equal(data, testBuffers[1])
 
     ;({closed, data} = await readStream.read())
-    data.should.equal(testBuffers[2])
+    assert.equal(data, testBuffers[2])
 
     ;({closed, data} = await readStream.read())
-    should.exist(closed)
+    assert.ok(closed)
+
+    assert.end()
   })
 
-  it('should be convertible to string', () =>
-    streamableToText(streamable).then(text =>
-      text.should.equal('foobarbaz')))
+  assert::asyncTest('should be convertible to string', async function(assert) {
+    const text = await streamableToText(streamable)
+    assert.equal(text, 'foobarbaz')
+    assert.end()
+  })
 
-  it('convert buffers stream into reusable streamable', async function() {
-    const streamable2 = await streamable.toStream().then(reuseStream)
+  assert::asyncTest('convert buffers stream into reusable streamable', async function(assert) {
+    const streamable2 = reuseStream(await streamable.toStream())
 
-    const buffers = await streamable2.toStream().then(streamToBuffers)
-    buffers.should.eql(testBuffers)
+    const buffers = await streamToBuffers(await streamable2.toStream())
+    assert.deepEqual(buffers, testBuffers)
 
     // call toStream() again
-    const buffers2 = await streamable2.toStream().then(streamToBuffers)
-    buffers2.should.eql(testBuffers)
+    const buffers2 = await streamToBuffers(await streamable2.toStream())
+    assert.deepEqual(buffers2, testBuffers)
+    assert.end()
   })
 })

@@ -1,10 +1,10 @@
-import { 
+import test from 'tape'
+import { asyncTest } from 'quiver-util/tape'
+
+import {
   streamToJson, buffersToStream, textToStreamable,
   jsonToStreamable, streamableToJson
-} from '../lib/stream-util'
-
-const chai = require('chai')
-const should = chai.should()
+} from '../lib'
 
 const originalJson = {
   "foo": "testing 123",
@@ -14,55 +14,62 @@ const originalJson = {
 }
 
 const testJson = function(json) {
-  json.foo.should.equal('testing 123')
-  json.bar[0].should.equal('a')
-  json.bar[1].should.equal('b')
+  const assert = this
+  assert.equal(json.foo, 'testing 123')
+  assert.equal(json.bar[0], 'a')
+  assert.equal(json.bar[1], 'b')
 }
 
 const testBuffers = [
   '{ "fo', 'o": "', 'testing ', '123", ', '"bar', '": [ ',
-  '"a", "b', '"] }' 
+  '"a", "b', '"] }'
 ]
 
-describe('basic json test', function() {
-  it('sanity test with original content', () => 
-    testJson(originalJson))
-
-  it('sanity test with test buffers', () =>
-    testJson(JSON.parse((testBuffers.join('')))))
-
-  it('should parse json correctly', () =>
-    streamToJson(buffersToStream(testBuffers)).then(testJson))
-
-  it('should convert json to streamable', async function() {
-    const streamable = jsonToStreamable(originalJson)
-
-    should.exist(streamable.toJson)
-    should.exist(streamable.toText)
-    should.exist(streamable.toBuffer)
-
-    streamable.contentType.should.equal('application/json')
-
-    await streamable.toJson()
-      .then(testJson)
-
-    await streamable.toText()
-      .then(JSON.parse).then(testJson)
-
-    await streamable.toStream()
-      .then(streamToJson).then(testJson)
-
+test('basic json test', assert => {
+  assert.test('sanity test with original content', assert => {
+    assert::testJson(originalJson)
+    assert.end()
   })
 
-  it('should convert text to streamble', async function() {
+  assert.test('sanity test with test buffers', assert => {
+    assert::testJson(JSON.parse((testBuffers.join(''))))
+    assert.end()
+  })
+
+  assert::asyncTest('should parse json correctly', async function(assert) {
+    const json = await streamToJson(buffersToStream(testBuffers))
+    assert::testJson(json)
+    assert.end()
+  })
+
+  assert::asyncTest('should convert json to streamable', async function(assert) {
+    const streamable = jsonToStreamable(originalJson)
+
+    assert.ok(streamable.toJson)
+    assert.ok(streamable.toText)
+    assert.ok(streamable.toBuffer)
+
+    assert.equal(streamable.contentType, 'application/json')
+
+    assert::testJson(await streamable.toJson())
+
+    assert::testJson(JSON.parse(await streamable.toText()))
+
+    assert::testJson(await streamToJson(await streamable.toStream()))
+
+    assert.end()
+  })
+
+  assert::asyncTest('should convert text to streamble', async function(assert) {
     const jsonText = JSON.stringify(originalJson)
     const streamable = textToStreamable(jsonText)
 
-    should.not.exist(streamable.toJson)
-    should.exist(streamable.toText)
+    assert.notOk(streamable.toJson)
+    assert.ok(streamable.toText)
 
-    await streamableToJson(streamable).then(testJson)
+    assert::testJson(await streamableToJson(streamable))
 
-    should.exist(streamable.toJson)
+    assert.ok(streamable.toJson)
+    assert.end()
   })
 })

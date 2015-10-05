@@ -1,65 +1,77 @@
-import { 
-  pipeStream, createChannel, 
+import test from 'tape'
+import { asyncTest, rejected } from 'quiver-util/tape'
+
+import {
+  pipeStream, createChannel,
   buffersToStream, streamToText
-} from '../lib/stream-util.js'
-
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
-
-chai.use(chaiAsPromised)
-const should = chai.should()
+} from '../lib'
 
 const buffers = ['one ', 'two ', 'three']
 
-describe('pipestream test', () => {
-  it('should pipe successfully', () => {
+test('pipestream test', assert => {
+  assert::asyncTest('should pipe successfully', async function(assert) {
     const sourceStream = buffersToStream(buffers)
     const { writeStream, readStream } = createChannel()
 
     const p1 = pipeStream(sourceStream, writeStream)
 
     const p2 = streamToText(readStream).then(text =>
-      text.should.equal('one two three'))
+      assert.equal(text, 'one two three'))
 
-    return Promise.all([p1, p2])
+    await Promise.all([p1, p2])
+
+    assert.end()
   })
 
-  it('should write fail', () => {
-    const { writeStream: writeStream1, 
-      readStream: readStream1 } = createChannel()
-    const { writeStream: writeStream2, 
-      readStream: readStream2 } = createChannel()
+  assert::asyncTest('should write fail', async function(assert) {
+    const {
+      writeStream: writeStream1,
+      readStream: readStream1
+    } = createChannel()
 
-    const p1 = pipeStream(readStream1, writeStream2).should.be.rejected
+    const {
+      writeStream: writeStream2,
+      readStream: readStream2
+    } = createChannel()
+
+    const p1 = assert::rejected(pipeStream(readStream1, writeStream2))
 
     const p2 = readStream2.read().then(({closed, data}) => {
-      data.should.equal('one')
+      assert.equal(data, 'one')
       readStream2.closeRead(new Error())
     })
 
     writeStream1.write('one')
-    const p3 = writeStream1.prepareWrite().should.be.rejected
+    const p3 = assert::rejected(writeStream1.prepareWrite())
 
-    return Promise.all([p1, p2, p3])
+    await Promise.all([p1, p2, p3])
+
+    assert.end()
   })
 
-  it('should read fail', () => {
-    const { writeStream: writeStream1, 
-      readStream: readStream1 } = createChannel()
-    const { writeStream: writeStream2, 
-      readStream: readStream2 } = createChannel()
+  assert::asyncTest('should read fail', async function(assert) {
+    const {
+      writeStream: writeStream1,
+      readStream: readStream1
+    } = createChannel()
 
-    const p1 = pipeStream(readStream1, writeStream2).should.be.rejected
+    const {
+      writeStream: writeStream2,
+      readStream: readStream2
+    } = createChannel()
+
+    const p1 = assert::rejected(pipeStream(readStream1, writeStream2))
 
     writeStream1.write('one')
     writeStream1.closeWrite(new Error())
 
     const p2 = readStream2.read().then(({closed, data}) => {
-      data.should.equal('one')
-      
-      return readStream2.read().should.be.rejected
+      assert.equal(data, 'one')
+
+      return assert::rejected(readStream2.read())
     })
 
-    return Promise.all([p1, p2])
+    await Promise.all([p1, p2])
+    assert.end()
   })
 })

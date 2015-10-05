@@ -1,30 +1,18 @@
-import { resolve, reject } from 'quiver-promise'
+export const pipeStream = async function(readStream, writeStream) {
+  try {
+    while(true) {
+      const { closed: writeClosed } = await writeStream.prepareWrite()
+      if(writeClosed) return readStream.closeRead()
 
-export const pipeStream = (readStream, writeStream) => {
-  const doPipe = () => 
-    writeStream.prepareWrite().then(({closed}) => {
-      if(closed) {
-        readStream.closeRead()
-        return resolve()
-      }
+      const { data, closed: readClosed } = await readStream.read()
+      if(readClosed) return writeStream.closeWrite()
 
-      return readStream.read().then(({closed, data}) => {
-        if(closed) {
-          writeStream.closeWrite()
-          return resolve()
-        }
+      writeStream.write(data)
+    }
+  } catch(err) {
+    readStream.closeRead(err)
+    writeStream.closeWrite(err)
 
-        writeStream.write(data)
-        return doPipe()
-        
-      }, err => {
-        writeStream.closeWrite(err)
-        return reject(err)
-      })
-    }, err => {
-      readStream.closeRead(err)
-      return reject(err)
-    })
-
-  return doPipe()
+    throw err
+  }
 }

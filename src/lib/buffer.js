@@ -1,57 +1,63 @@
-import { resolve } from 'quiver-promise'
+import { resolve } from 'quiver-util/promise'
 import { createChannel } from 'quiver-stream-channel'
-import { 
-  streamToBuffers, streamableToBuffers 
+import {
+  streamToBuffers, streamableToBuffers
 } from './buffers'
 
 const nodeBuffers = buffers =>
-  buffers.map(buffer =>
-    (buffer instanceof Buffer) ? buffer : new Buffer(buffer))
+  buffers.map(buffer => {
+    if(Buffer.isBuffer(buffer)) return buffer
 
-const buffersToBuffer = buffers =>
+    return new Buffer(buffer)
+  })
+
+const concatBuffers = buffers =>
   Buffer.concat(nodeBuffers(buffers))
 
 export const streamToBuffer = readStream =>
-  streamToBuffers(readStream).then(buffersToBuffer)
+  streamToBuffers(readStream).then(concatBuffers)
 
-export const streamableToBuffer = streamable => {
-  if(streamable.toBuffer) return resolve(streamable.toBuffer())
+export const streamableToBuffer = async function(streamable) {
+  if(streamable.toBuffer) return streamable.toBuffer()
 
-  return streamableToBuffers(streamable).then(buffersToBuffer)
-    .then(buffer => {
-      if(streamable.reusable && !streamable.toBuffer) {
-        streamable.toBuffer = () => resolve(buffer)
-      }
+  const buffers = await streamableToBuffers(streamable)
+  const buffer = concatBuffers(buffers)
 
-      return buffer
-    })
+  if(streamable.reusable && !streamable.toBuffer)
+    streamable.toBuffer = () => resolve(buffer)
+
+  return buffer
 }
 
 export const bufferToStream = buffer => {
-  if(!Buffer.isBuffer(buffer)) 
+  if(!Buffer.isBuffer(buffer))
     buffer = new Buffer(buffer)
-  
+
   const { readStream, writeStream } = createChannel()
 
   writeStream.write(buffer)
-  writeStream.closeWrite(null)
+  writeStream.closeWrite()
 
   return readStream
 }
 
-export const toBufferToStreamable = (toBuffer) => ({
-  reusable: true,
-  get contentLength() {
-    return toBuffer().length
-  },
-  toBuffer: () => resolve(toBuffer()),
-  toBuffers: () => resolve([toBuffer()]),
-  toStream: () => resolve(bufferToStream(toBuffer()))
-})
+export const bufferToStreamable = (buffer, contentType='application/octet-stream') => {
+  const contentLength = buffer.length
+  return {
+    reusable: true,
+    contentType,
+    contentLength,
 
-export const bufferToStreamable = buffer => {
-  if(!Buffer.isBuffer(buffer)) 
-    buffer = new Buffer(buffer)
+    async toBuffer() {
+      return buffer
+    },
 
-  return toBufferToStreamable(() => buffer)
+    async toBuffers() {
+      return [buffer]
+    },
+
+    async toStream() {
+      return bufferToStream(buffer)
+    }
+  }
 }

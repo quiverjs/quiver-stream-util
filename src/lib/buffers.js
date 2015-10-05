@@ -1,45 +1,51 @@
-import { resolve, promisify } from 'quiver-promise'
+import { resolve } from 'quiver-util/promise'
 import { createChannel } from 'quiver-stream-channel'
 
-export const streamToBuffers = readStream => {
+export const streamToBuffers = async function(readStream) {
   const buffers = [ ]
 
-  const doPipe = (callback) =>
-    readStream.read().then(({ closed, data }) => {
-      if(closed) return callback(null, buffers)
-
-      buffers.push(data)
-      doPipe(callback)
-    }, callback)
-
-  return promisify(doPipe)()
+  while(true) {
+    const { data, closed } = await readStream.read()
+    if(closed) return buffers
+    buffers.push(data)
+  }
 }
 
-export const streamableToBuffers = streamable => {
-  if(streamable.toBuffers) return resolve(streamable.toBuffers())
+export const streamableToBuffers = async function(streamable) {
+  if(streamable.toBuffers) return streamable.toBuffers()
 
-  return streamable.toStream().then(readStream =>
-    streamToBuffers(readStream).then(buffers => {
-      if(streamable.reusable && !streamable.toBuffers) {
-        streamable.toBuffers = () => resolve(buffers.slice())
-        return buffers.slice()
-      }
+  const readStream = await streamable.toStream()
+  const buffers = await streamToBuffers(readStream)
 
-      return buffers
-    }))
+  if(!streamable.reusable || streamable.toBuffers)
+    return buffers
+
+  streamable.toBuffers = () => resolve(buffers.slice())
+  return buffers.slice()
 }
 
 export const buffersToStream = buffers => {
   const { readStream, writeStream } = createChannel()
 
-  buffers.forEach(buffer => writeStream.write(buffer))
+  for(let buffer of buffers) {
+    writeStream.write(buffer)
+  }
+
   writeStream.closeWrite()
 
   return readStream
 }
 
-export const buffersToStreamable = buffers => ({
-  reusable: true,
-  toBuffers: () => resolve(buffers.slice()),
-  toStream: () => resolve(buffersToStream(buffers))
-})
+export const buffersToStreamable = buffers => {
+  return {
+    reusable: true,
+
+    async toBuffers() {
+      return buffers.slice()
+    },
+
+    async toStream() {
+      return buffersToStream(buffers)
+    }
+  }
+}

@@ -1,5 +1,3 @@
-import { resolve } from 'quiver-promise'
-
 export const pushbackStream = (readStream, buffers=[]) => {
   if(readStream.pushback) {
     readStream.pushback(buffers)
@@ -8,11 +6,11 @@ export const pushbackStream = (readStream, buffers=[]) => {
 
   const newReadStream = Object.create(readStream)
 
-  const doRead = () => {
-    if(buffers.length == 0) {
-      return readStream.read()
+  const doRead = async function() {
+    if(buffers.length > 0) {
+      return { data: buffers.shift() }
     } else {
-      return resolve({ data: buffers.shift() })
+      return readStream.read()
     }
   }
 
@@ -27,16 +25,15 @@ export const pushbackStream = (readStream, buffers=[]) => {
     buffers = moreBuffers.concat(buffers)
   }
 
-  newReadStream.peek = () => {
-    if(buffers[0]) 
-      return resolve({ data: buffers[0] })
+  newReadStream.peek = async function() {
+    if(buffers[0])
+      return { data: buffers[0] }
 
-    return doRead(({ closed, data }) => {
-      if(closed) return { closed }
+    const { data, closed } = await doRead()
+    if(closed) return { closed }
 
-      buffers.push(data)
-      return { data }
-    })
+    buffers.push(data)
+    return { data }
   }
 
   return newReadStream

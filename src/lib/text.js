@@ -1,26 +1,25 @@
-import { resolve } from 'quiver-promise'
+import { resolve } from 'quiver-util/promise'
 import { createChannel } from 'quiver-stream-channel'
-import { 
-  streamToBuffer, streamableToBuffer, 
-  toBufferToStreamable 
+import {
+  streamToBuffer, streamableToBuffer,
+  bufferToStreamable
 } from './buffer'
 
-export const streamToText = readStream =>
-  streamToBuffer(readStream).then(buffer =>
-    buffer.toString())
+export const streamToText = async function(readStream) {
+  const buffer = await streamToBuffer(readStream)
+  return buffer.toString()
+}
 
-export const streamableToText = streamable => {
-  if(streamable.toText) return resolve(streamable.toText())
+export const streamableToText = async function(streamable) {
+  if(streamable.toText) return streamable.toText()
 
-  return streamableToBuffer(streamable).then(buffer => {
-    const text = buffer.toString()
-    
-    if(streamable.reusable && !streamable.toText) {
-      streamable.toText = () => resolve(text)
-    }
+  const buffer = await streamableToBuffer(streamable)
+  const text = buffer.toString()
 
-    return text
-  })
+  if(streamable.reusable && !streamable.toText)
+    streamable.toText = () => resolve(text)
+
+  return text
 }
 
 export const textToStream = text => {
@@ -32,22 +31,15 @@ export const textToStream = text => {
   return readStream
 }
 
-export const toTextToStreamable = (toText, contentType='text/plain') => {
-  let buffer = null
+export const textToStreamable = (text, contentType='text/plain') => {
+  if(typeof(text) !== 'string')
+    throw new TypeError('argument must be string')
 
-  const toBuffer = () => {
-    if(!buffer) buffer = new Buffer(toText())
+  const buffer = new Buffer(text)
+  const streamable = bufferToStreamable(buffer, contentType)
 
-    return buffer
-  }
-
-  const streamable = toBufferToStreamable(toBuffer)
-
-  streamable.toText = () => resolve(toText())
+  streamable.toText = () => resolve(text)
   streamable.contentType = contentType
 
   return streamable
 }
-
-export const textToStreamable = (text, contentType='text/plain') =>
-  toTextToStreamable(() => text, contentType)

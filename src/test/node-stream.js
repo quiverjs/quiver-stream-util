@@ -1,12 +1,13 @@
-import fs from 'fs'
-
-import { 
-  nodeToQuiverReadStream, nodeToQuiverWriteStream, streamToText
-} from '../lib/stream-util.js'
-
-const { 
+import test from 'tape'
+import { asyncTest } from 'quiver-util/tape'
+import { awaitEvent } from 'quiver-util/promise'
+import {
   readFileSync, createReadStream, createWriteStream
-} = fs
+} from 'fs'
+
+import {
+  nodeToQuiverReadStream, nodeToQuiverWriteStream, streamToText
+} from '../lib'
 
 const sampleFile = 'fixture/sample.txt'
 const tempWrite = 'fixture/temp.txt'
@@ -32,31 +33,35 @@ const chunkString = (content, count) => {
 
 const writeChunks = chunkString(expectedContent, 5)
 
-describe('node stream convert test', () => {
-  it('should read the right content', () => {
+test('node stream convert test', assert => {
+  assert::asyncTest('should read the right content', async function(assert) {
     const nodeStream = createReadStream(sampleFile)
     const readStream = nodeToQuiverReadStream(nodeStream)
 
-    return streamToText(readStream, text =>
-      text.should.equal(expectedContent))
+    const text = await streamToText(readStream)
+    assert.equal(text, expectedContent)
+    assert.end()
   })
 
-  it('test write chunks correctness', () => 
-    writeChunks.join('').should.equal(expectedContent))
+  assert.test('test write chunks correctness', assert => {
+    assert.equal(writeChunks.join(''), expectedContent)
+    assert.end()
+  })
 
-  it('should write the right content', callback => {
+  assert::asyncTest('should write the right content', async function(assert) {
     const nodeStream = createWriteStream(tempWrite)
     const writeStream = nodeToQuiverWriteStream(nodeStream)
 
-    writeChunks.forEach(data =>
-      writeStream.write(data))
+    for(let data of writeChunks)
+      writeStream.write(data)
 
     writeStream.closeWrite()
 
-    nodeStream.on('finish', () => {
-      const result = readFileSync(tempWrite).toString()
-      result.should.equal(expectedContent)
-      callback()
-    })
+    await awaitEvent(nodeStream, 'finish')
+
+    const result = readFileSync(tempWrite).toString()
+    assert.equal(result, expectedContent)
+
+    assert.end()
   })
 })

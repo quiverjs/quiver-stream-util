@@ -1,4 +1,5 @@
 import test from 'tape'
+import { join as joinPath } from 'path'
 import { asyncTest } from 'quiver-util/tape'
 import { awaitEvent } from 'quiver-util/promise'
 import {
@@ -9,8 +10,8 @@ import {
   nodeToQuiverReadStream, nodeToQuiverWriteStream, streamToText
 } from '../lib'
 
-const sampleFile = 'fixture/sample.txt'
-const tempWrite = 'fixture/temp.txt'
+const sampleFile = joinPath(__dirname, '../../fixture/sample.txt')
+const tempWrite = joinPath(__dirname, '../../fixture/temp.txt')
 const expectedContent = readFileSync(sampleFile).toString()
 
 const chunkString = (content, count) => {

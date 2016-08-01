@@ -1,4 +1,4 @@
-export const pipeStream = async function(readStream, writeStream) {
+export const pipeStream = async (readStream, writeStream) => {
   try {
     while(true) {
       const { closed: writeClosed } = await writeStream.prepareWrite()

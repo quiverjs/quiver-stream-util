@@ -1,3 +1,3 @@
 node_modules/
-out/
+dist/
 fixture/temp.txt

@@ -1,4 +1,4 @@
-export { 
+export {
   streamToBuffers, streamableToBuffers, buffersToStream, buffersToStreamable
 } from './buffers'
 
@@ -31,4 +31,7 @@ export {
 } from './empty'
 
 export { pipeStream } from './pipe'
+
+export { pipeStreamableToNodeStream } from './pipe-node'
+
 export { createChannel } from 'quiver-stream-channel'

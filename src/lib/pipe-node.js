@@ -5,6 +5,10 @@ export const pipeStreamableToNodeStream = async (streamable, nodeWrite) => {
   if(streamable.toNodeStream) {
     const nodeRead = await streamable.toNodeStream()
     nodeRead.pipe(nodeWrite)
+    await new Promise((resolve, reject) => {
+      nodeWrite.on('close', resolve)
+      nodeWrite.on('error', reject)
+    })
 
   } else {
     const readStream = await streamable.toStream()
